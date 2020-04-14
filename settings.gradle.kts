@@ -22,6 +22,7 @@ apply(plugin = "org.metaborg.gradle.config.devenv-settings")
 
 // Include builds from subdirectories, but only if it is from an included repository.
 configure<DevenvSettingsExtension> {
+  includeBuildsFromSubDirs(true)
   if(repoProperties["spoofax-pie"]?.include == true && rootDir.resolve("spoofax.pie").exists()) {
     // Manually include Spoofax-PIE (nested) composite builds, as IntelliJ does not support nested composite builds.
     includeBuild("spoofax.pie/core")
@@ -31,5 +32,4 @@ configure<DevenvSettingsExtension> {
     includeBuild("spoofax.pie/example/mod")
     includeBuild("spoofax.pie/example/sdf3")
   }
-  includeBuildsFromSubDirs(true)
 }

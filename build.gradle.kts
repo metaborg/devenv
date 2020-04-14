@@ -28,3 +28,17 @@ devenv {
   // Continuous integration.
   registerRepo("jenkins.pipeline")
 }
+
+tasks.register("buildPie") {
+  dependsOn(gradle.includedBuild("pie").task(":buildAll"))
+}
+tasks.register("buildTigerManual") {
+  dependsOn(gradle.includedBuild("spoofax.example.tiger.manual").task(":buildAll"))
+}
+tasks.register("runSdf3Eclipse") {
+  dependsOn(gradle.includedBuild("spoofax.example.sdf3").task(":sdf3.eclipse:run"))
+}
+tasks.register("testSdf3Spoofax") {
+  dependsOn(gradle.includedBuild("spoofax.example.sdf3").task(":sdf3.spoofax:test"))
+}
+

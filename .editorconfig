@@ -55,6 +55,10 @@ ij_java_doc_do_not_wrap_if_one_line = true
 # Don't use star imports.
 ij_java_class_count_to_use_import_on_demand = 999
 ij_java_names_count_to_use_import_on_demand = 999
+# Enable JavaDoc formatting, don't put <p> tag on empty lines.
+ij_java_doc_enable_formatting = true
+ij_java_doc_add_p_tag_on_empty_lines = false
+
 
 [*.json]
 indent_size = 2
