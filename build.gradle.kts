@@ -29,8 +29,13 @@ devenv {
   registerRepo("jenkins.pipeline")
 }
 
-tasks.register("buildPie") {
-  dependsOn(gradle.includedBuild("pie").task(":buildAll"))
+try {
+  val pie = gradle.includedBuild("pie")
+  tasks.register("buildPie") {
+    dependsOn(pie.task(":buildAll"))
+  }
+} catch(e: UnknownDomainObjectException) {
+  // Ignore
 }
 tasks.register("buildTigerManual") {
   dependsOn(gradle.includedBuild("spoofax.example.tiger.manual").task(":buildAll"))
