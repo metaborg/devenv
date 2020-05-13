@@ -9,6 +9,8 @@ pluginManagement {
   }
 }
 
+enableFeaturePreview("GRADLE_METADATA")
+
 // Apply devenv-settings plugin. Settings plugins must still be put on the classpath via a buildscript block.
 buildscript {
   repositories {
