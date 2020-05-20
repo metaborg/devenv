@@ -28,10 +28,6 @@ configure<DevenvSettingsExtension> {
   if(repoProperties["spoofax-pie"]?.include == true && rootDir.resolve("spoofax.pie").exists()) {
     // Manually include Spoofax-PIE (nested) composite builds, as IntelliJ does not support nested composite builds.
     includeBuild("spoofax.pie/core")
-    includeBuild("spoofax.pie/example/tiger/spoofaxcore")
-    includeBuild("spoofax.pie/example/tiger/generated")
-    includeBuild("spoofax.pie/example/tiger/manual")
-    includeBuild("spoofax.pie/example/mod")
-    includeBuild("spoofax.pie/example/sdf3")
+    includeBuild("spoofax.pie/example")
   }
 }

@@ -37,13 +37,11 @@ try {
 } catch(e: UnknownDomainObjectException) {
   // Ignore
 }
-tasks.register("buildTigerManual") {
-  dependsOn(gradle.includedBuild("spoofax.example.tiger.manual").task(":buildAll"))
-}
+
 tasks.register("runSdf3Eclipse") {
-  dependsOn(gradle.includedBuild("spoofax.example.sdf3").task(":sdf3.eclipse:run"))
+  dependsOn(gradle.includedBuild("spoofax.example").task(":sdf3.eclipse:run"))
 }
 tasks.register("testSdf3Spoofax") {
-  dependsOn(gradle.includedBuild("spoofax.example.sdf3").task(":sdf3.spoofax:test"))
+  dependsOn(gradle.includedBuild("spoofax.example").task(":sdf3.spoofax:test"))
 }
 
