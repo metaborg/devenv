@@ -29,6 +29,16 @@ devenv {
   registerRepo("jenkins.pipeline")
 }
 
+tasksWithIncludedBuild("coronium") { coronium ->
+  tasksWithIncludedBuild("coronium.example") { coroniumExample ->
+    register("buildCoronium") {
+      group = "development"
+      dependsOn(coronium.task(":buildAll"))
+      dependsOn(coroniumExample.task(":buildAll"))
+    }
+  }
+}
+
 tasksWithIncludedBuild("spoofax.gradle") { spoofaxGradle ->
   tasksWithIncludedBuild("spoofax.gradle.example") { spoofaxGradleExample ->
     register("buildSpoofaxGradle") {

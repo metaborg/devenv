@@ -26,6 +26,10 @@ apply(plugin = "org.metaborg.gradle.config.devenv-settings")
 configure<DevenvSettingsExtension> {
   includeBuildsFromSubDirs(true)
   // Manually include nested composite builds, as IntelliJ does not support them.
+  if(repoProperties["coronium"]?.include == true && rootDir.resolve("coronium").exists()) {
+    includeBuild("coronium/plugin")
+    includeBuild("coronium/example")
+  }
   if(repoProperties["spoofax.gradle"]?.include == true && rootDir.resolve("spoofax.gradle").exists()) {
     includeBuild("spoofax.gradle/plugin")
     includeBuild("spoofax.gradle/example")
