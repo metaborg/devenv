@@ -1,6 +1,6 @@
 plugins {
-  id("org.metaborg.gradle.config.devenv") version "0.3.20"
-  id("org.metaborg.gradle.config.root-project") version "0.3.20"
+  id("org.metaborg.gradle.config.devenv") version "0.3.21"
+  id("org.metaborg.gradle.config.root-project") version "0.3.21"
 }
 
 devenv {
@@ -29,8 +29,17 @@ devenv {
   registerRepo("jenkins.pipeline")
 }
 
+tasksWithIncludedBuild("gitonium") {
+  registerDelegateTask("buildGitonium", it, ":buildAll")
+}
+
 tasksWithIncludedBuild("coronium") { coronium ->
   tasksWithIncludedBuild("coronium.example") { coroniumExample ->
+    register("cleanCoronium") {
+      group = "development"
+      dependsOn(coronium.task(":cleanAll"))
+      dependsOn(coroniumExample.task(":cleanAll"))
+    }
     register("buildCoronium") {
       group = "development"
       dependsOn(coronium.task(":buildAll"))
@@ -59,13 +68,13 @@ tasksWithIncludedBuild("spoofax.example") {
   registerDelegateTask("testMod", it, ":mod:test")
   registerDelegateTask("testModSpoofax", it, ":mod.spoofax:test")
   registerDelegateTask("runModCli", it, ":mod.cli:run")
-  registerDelegateTask("runModEclipse", it, ":mod.eclipse:run")
+  registerDelegateTask("runModEclipse", it, ":mod.eclipse:runEclipse")
   registerDelegateTask("runModIntelliJ", it, ":mod.intellij:runIde")
 
   registerDelegateTask("testSdf3", it, ":sdf3:test")
   registerDelegateTask("testSdf3Spoofax", it, ":sdf3.spoofax:test")
   registerDelegateTask("runSdf3Cli", it, ":sdf3.cli:run")
-  registerDelegateTask("runSdf3Eclipse", it, ":sdf3.eclipse:run")
+  registerDelegateTask("runSdf3Eclipse", it, ":sdf3.eclipse:runEclipse")
   registerDelegateTask("runSdf3IntelliJ", it, ":sdf3.intellij:runIde")
 }
 
