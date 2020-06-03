@@ -50,6 +50,11 @@ tasksWithIncludedBuild("coronium") { coronium ->
 
 tasksWithIncludedBuild("spoofax.gradle") { spoofaxGradle ->
   tasksWithIncludedBuild("spoofax.gradle.example") { spoofaxGradleExample ->
+    register("cleanSpoofaxGradle") {
+      group = "development"
+      dependsOn(spoofaxGradle.task(":cleanAll"))
+      dependsOn(spoofaxGradleExample.task(":cleanAll"))
+    }
     register("buildSpoofaxGradle") {
       group = "development"
       dependsOn(spoofaxGradle.task(":buildAll"))
