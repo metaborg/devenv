@@ -9,7 +9,9 @@ pluginManagement {
   }
 }
 
-enableFeaturePreview("GRADLE_METADATA")
+if(org.gradle.util.VersionNumber.parse(gradle.gradleVersion).major < 6) {
+  enableFeaturePreview("GRADLE_METADATA")
+}
 
 // Apply devenv-settings plugin. Settings plugins must still be put on the classpath via a buildscript block.
 buildscript {
@@ -24,7 +26,6 @@ apply(plugin = "org.metaborg.gradle.config.devenv-settings")
 
 // Include builds from subdirectories, but only if it is from an included repository.
 configure<DevenvSettingsExtension> {
-  includeBuildsFromSubDirs(true)
   // Manually include nested composite builds, as IntelliJ does not support them.
   if(repoProperties["coronium"]?.include == true && rootDir.resolve("coronium").exists()) {
     includeBuild("coronium/plugin")
@@ -34,6 +35,10 @@ configure<DevenvSettingsExtension> {
     includeBuild("spoofax.gradle/plugin")
     includeBuild("spoofax.gradle/example")
   }
+
+  // HACK: include rest of the builds AFTER including the Gradle plugins, because included build order matters.
+  includeBuildsFromSubDirs(true)
+
   if(repoProperties["spoofax-pie"]?.include == true && rootDir.resolve("spoofax.pie").exists()) {
     includeBuild("spoofax.pie/core")
     includeBuild("spoofax.pie/example")

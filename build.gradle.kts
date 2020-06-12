@@ -65,6 +65,7 @@ tasksWithIncludedBuild("spoofax.gradle") { spoofaxGradle ->
 
 tasksWithIncludedBuild("pie") {
   registerDelegateTask("buildPie", it, ":buildAll")
+  registerDelegateTask("publishPieLangToMavenLocal", it, ":pie.lang:publishToMavenLocal")
 }
 
 tasksWithIncludedBuild("spoofax.example") {
