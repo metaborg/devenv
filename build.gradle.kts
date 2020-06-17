@@ -68,6 +68,11 @@ tasksWithIncludedBuild("pie") {
   registerDelegateTask("publishPieLangToMavenLocal", it, ":pie.lang:publishToMavenLocal")
 }
 
+tasksWithIncludedBuild("sdf") {
+  registerDelegateTask("buildSdf3", it, ":buildAll")
+  registerDelegateTask("buildSdf3Lang", it, ":org.metaborg.meta.lang.template:build")
+}
+
 tasksWithIncludedBuild("spoofax.example") {
   registerDelegateTask("buildSpoofaxExample", it, ":buildAll")
 
