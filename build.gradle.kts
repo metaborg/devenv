@@ -87,6 +87,18 @@ tasksWithIncludedBuild("spoofax.example") {
   registerDelegateTask("runSdf3Cli", it, ":sdf3.cli:run")
   registerDelegateTask("runSdf3Eclipse", it, ":sdf3.eclipse:runEclipse")
   registerDelegateTask("runSdf3IntelliJ", it, ":sdf3.intellij:runIde")
+
+  registerDelegateTask("testTiger", it, ":tiger:test")
+  registerDelegateTask("testTigerSpoofax", it, ":tiger.spoofax:test")
+  registerDelegateTask("runTigerCli", it, ":tiger.cli:run")
+  registerDelegateTask("runTigerEclipse", it, ":tiger.eclipse:runEclipse")
+  registerDelegateTask("runTigerIntelliJ", it, ":tiger.intellij:runIde")
+
+  registerDelegateTask("testTigerManual", it, ":tiger.manual:test")
+  registerDelegateTask("testTigerManualSpoofax", it, ":tiger.manual.spoofax:test")
+  registerDelegateTask("runTigerManualCli", it, ":tiger.manual.cli:run")
+  registerDelegateTask("runTigerManualEclipse", it, ":tiger.manual.eclipse:runEclipse")
+  registerDelegateTask("runTigerManualIntelliJ", it, ":tiger.manual.intellij:runIde")
 }
 
 fun Project.tasksWithIncludedBuild(name: String, fn: TaskContainer.(IncludedBuild) -> Unit) {
