@@ -10,7 +10,7 @@ The script supports cloning and updating Git repositories that contain the sourc
 To run Gradle and build this repository, a Java Development Kit (JDK) of version 8 is needed.
 Higher versions of the JDK (9+) are currently not supported, as not all our Java code is compatible with Java 9+ yet.
 
-We recommend to [install JDK8 from AdoptOpenJDK](https://adoptopenjdk.net/), or to use your favourite package manager (e.g., `brew install adoptopenjdk8` on macOS, `choco install adoptopenjdk8jre` on Windows).
+We recommend to [install JDK8 from AdoptOpenJDK](https://adoptopenjdk.net/), or to use your favourite package manager (e.g., `brew install adoptopenjdk8` on macOS, `choco install adoptopenjdk8` on Windows).
 
 ### Gradle
 
@@ -86,7 +86,7 @@ Eclipse supports Gradle through the [buildship](https://projects.eclipse.org/pro
 However, using Eclipse is discouraged, as IntelliJ has much better support for Gradle.
 
 Import the project as an existing Gradle project. See [Import an existing Gradle project](http://www.vogella.com/tutorials/EclipseGradle/article.html#import-an-existing-gradle-project).
-On the `Import Options` page, select `Specific Gradle version` and choose `5.6.4.
+On the `Import Options` page, select `Specific Gradle version` and choose `5.6.4`.
 
 When new repositories are cloned, refresh the `devenv` Gradle project. See [Refresh Gradle Project](http://www.vogella.com/tutorials/EclipseGradle/article.html#updating-classpath-with-the-latest-changes-in-the-build-file).
 
@@ -161,3 +161,11 @@ You didn't set the memory limits found at the start of this README, or they need
 
 ### Could not create service of type FileAccessTimeJournal using GradleUserHomeScopeServices.createFileAccessTimeJournal()
 The permissions in your `~/.gradle/` directory are too restrictive. For example, if you're using WSL, ensure the directory is not a symlink to the Windows' `.gradle/` directory.
+
+### Error resolving plugin: Plugin request for plugin already on the classpath must not include a version
+
+> Error resolving plugin [id: 'org.metaborg.gradle.config.devenv', version: '?']
+>
+> Plugin request for plugin already on the classpath must not include a version
+
+You are not running with the recommended version of Gradle.
