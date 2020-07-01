@@ -140,6 +140,20 @@ To create a personal development environment, fork this repository and set up th
 
 In both cases, pull in changes from `master` of `origin` to receive updates to the build script and list of repositories.
 
+## Depending on Spoofax 2 snapshot
+Spoofax 3 has some dependencies on specific release versions of Spoofax 2 libraries. If for some reason you need to depend on the latest snapshot version of Spoofax 2 such as `2.6.0-SNAPSHOT`, do the following:
+
+- add the `spoofax.gradle` project [to your development environment](#Shared and personal development environments)
+- change the `spoofaxVersion` variable in `spoofax.gradle/plugin/build.gradle.kts` to the desired snapshot version
+- change the `spoofax2Version` variable in `spoofax.pie/core/spoofax.depconstraints/build.gradle.kts` to the desired snapshot version
+
+> _Note_: Gradle does not automatically check or download the latest snapshots. To force this on the command line, use the Gradle `--refresh-dependencies` command line option. For example:
+>
+>     ./gradlew buildAll --refresh-dependencies
+>
+> To force this in IntelliJ, right-click the project in the Gradle panel and choose _Refresh Gradle Dependencies_. If you've already refreshed the dependencies on the command line, simply reimport the Gradle projects if IntelliJ doesn't see the new dependencies.
+
+
 ## Behind the scenes
 
 This project uses the [Gradle Kotlin DSL](https://docs.gradle.org/current/userguide/kotlin_dsl.html) for build scripts, so that we can write `settings.gradle.kts` and `build.gradle.kts` in Kotlin, to get more type checking and editor services.
