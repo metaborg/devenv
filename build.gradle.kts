@@ -76,6 +76,12 @@ tasksWithIncludedBuild("sdf") {
 tasksWithIncludedBuild("spoofax.example") {
   registerDelegateTask("buildSpoofaxExample", it, ":buildAll")
 
+  registerDelegateTask("testTiger", it, ":tiger:test")
+  registerDelegateTask("testTigerSpoofax", it, ":tiger.spoofax:test")
+  registerDelegateTask("runTigerCli", it, ":tiger.cli:run")
+  registerDelegateTask("runTigerEclipse", it, ":tiger.eclipse:runEclipse")
+  registerDelegateTask("runTigerIntelliJ", it, ":tiger.intellij:runIde")
+
   registerDelegateTask("testMod", it, ":mod:test")
   registerDelegateTask("testModSpoofax", it, ":mod.spoofax:test")
   registerDelegateTask("runModCli", it, ":mod.cli:run")
@@ -87,18 +93,6 @@ tasksWithIncludedBuild("spoofax.example") {
   registerDelegateTask("runSdf3Cli", it, ":sdf3.cli:run")
   registerDelegateTask("runSdf3Eclipse", it, ":sdf3.eclipse:runEclipse")
   registerDelegateTask("runSdf3IntelliJ", it, ":sdf3.intellij:runIde")
-
-  registerDelegateTask("testTiger", it, ":tiger:test")
-  registerDelegateTask("testTigerSpoofax", it, ":tiger.spoofax:test")
-  registerDelegateTask("runTigerCli", it, ":tiger.cli:run")
-  registerDelegateTask("runTigerEclipse", it, ":tiger.eclipse:runEclipse")
-  registerDelegateTask("runTigerIntelliJ", it, ":tiger.intellij:runIde")
-
-  registerDelegateTask("testTigerManual", it, ":tiger.manual:test")
-  registerDelegateTask("testTigerManualSpoofax", it, ":tiger.manual.spoofax:test")
-  registerDelegateTask("runTigerManualCli", it, ":tiger.manual.cli:run")
-  registerDelegateTask("runTigerManualEclipse", it, ":tiger.manual.eclipse:runEclipse")
-  registerDelegateTask("runTigerManualIntelliJ", it, ":tiger.manual.intellij:runIde")
 }
 
 fun Project.tasksWithIncludedBuild(name: String, fn: TaskContainer.(IncludedBuild) -> Unit) {
@@ -115,5 +109,20 @@ fun TaskContainer.registerDelegateTask(name: String, build: IncludedBuild, varar
     taskPaths.forEach {
       dependsOn(build.task(it))
     }
+  }
+}
+
+tasks {
+  register("runTaskInCompositeBuild") {
+    this.group = "composite build"
+    this.description = "Runs a task in a composite build. Task path is given via -Ptask and composite build name is given via -PcompositeBuild"
+    dependsOn(run {
+      val taskPath = gradle.rootProject.property("task")
+        ?: throw GradleException("Task name was not given. Give the name of the task to execute with -Ptask=<task path>")
+      val compositeBuildName = gradle.rootProject.property("compositeBuild")
+        ?: throw GradleException("Composite build name was not given. Give the name of the composite build to execute the task in with -PcompositeBuild=<composite build name>")
+      val compositeBuild = gradle.includedBuild(compositeBuildName.toString())
+      compositeBuild.task(taskPath.toString())
+    })
   }
 }
