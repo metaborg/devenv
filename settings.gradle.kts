@@ -39,6 +39,11 @@ configure<DevenvSettingsExtension> {
   // HACK: include rest of the builds AFTER including the Gradle plugins, because included build order matters.
   includeBuildsFromSubDirs(true)
 
+  if(repoProperties["pie"]?.include == true && rootDir.resolve("pie").exists()) {
+    includeBuild("pie/core")
+    includeBuild("pie/lang")
+  }
+
   if(repoProperties["spoofax-pie"]?.include == true && rootDir.resolve("spoofax.pie").exists()) {
     includeBuild("spoofax.pie/core")
     includeBuild("spoofax.pie/example")

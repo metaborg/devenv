@@ -63,8 +63,17 @@ tasksWithIncludedBuild("spoofax.gradle") { spoofaxGradle ->
   }
 }
 
-tasksWithIncludedBuild("pie") {
-  registerDelegateTask("buildPie", it, ":buildAll")
+tasksWithIncludedBuild("pie.core.root") { pieCore ->
+  tasksWithIncludedBuild("pie.lang.root") { pieLang ->
+    register("buildPie") {
+      group = "development"
+      dependsOn(pieCore.task(":buildAll"))
+      dependsOn(pieLang.task(":buildAll"))
+    }
+  }
+}
+
+tasksWithIncludedBuild("pie.lang.root") {
   registerDelegateTask("publishPieLangToMavenLocal", it, ":pie.lang:publishToMavenLocal")
 }
 
@@ -116,13 +125,16 @@ tasks {
   register("runTaskInCompositeBuild") {
     this.group = "composite build"
     this.description = "Runs a task in a composite build. Task path is given via -Ptask and composite build name is given via -PcompositeBuild"
-    dependsOn(run {
+
+    try {
       val taskPath = gradle.rootProject.property("task")
-        ?: throw GradleException("Task name was not given. Give the name of the task to execute with -Ptask=<task path>")
       val compositeBuildName = gradle.rootProject.property("compositeBuild")
-        ?: throw GradleException("Composite build name was not given. Give the name of the composite build to execute the task in with -PcompositeBuild=<composite build name>")
       val compositeBuild = gradle.includedBuild(compositeBuildName.toString())
-      compositeBuild.task(taskPath.toString())
-    })
+      dependsOn(compositeBuild.task(taskPath.toString()))
+    } catch(e: groovy.lang.MissingPropertyException) {
+      // Ignore to prevent errors during configuration
+    } catch(e: UnknownDomainObjectException) {
+      // Ignore to prevent errors during configuration
+    }
   }
 }
