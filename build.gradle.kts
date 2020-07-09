@@ -18,6 +18,7 @@ devenv {
   registerRepo("spoofax")
   registerRepo("sdf")
   registerRepo("jsglr")
+  registerRepo("stratego")
 
   // Libraries and applications.
   registerRepo("log")
@@ -80,6 +81,11 @@ tasksWithIncludedBuild("pie.lang.root") {
 tasksWithIncludedBuild("sdf") {
   registerDelegateTask("buildSdf3", it, ":buildAll")
   registerDelegateTask("buildSdf3Lang", it, ":org.metaborg.meta.lang.template:build")
+}
+
+tasksWithIncludedBuild("stratego") {
+  registerDelegateTask("buildStratego", it, ":buildAll")
+  registerDelegateTask("buildStrategoLang", it, ":org.metaborg.meta.lang.stratego:build")
 }
 
 tasksWithIncludedBuild("spoofax.example") {
