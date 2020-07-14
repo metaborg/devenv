@@ -183,3 +183,9 @@ The permissions in your `~/.gradle/` directory are too restrictive. For example,
 > Plugin request for plugin already on the classpath must not include a version
 
 You are not running with the recommended version of Gradle.
+
+### Unknown command-line option '--args'
+Command-line arguments such as `--args` are not supported for tasks in the root project, such as the `runSdf3Cli` task. Instead, go to the relevant included build and call the task directly.
+
+    cd spoofax.pie/example
+    ./gradlew :sdf3.cli:run --args="-V"
