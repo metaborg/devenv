@@ -31,6 +31,15 @@ devenv {
   registerRepo("jenkins.pipeline")
 }
 
+tasks.register("includedBuilds") {
+  doLast {
+    println("Included builds:")
+    for (build in gradle.includedBuilds) {
+      println("  :${build.name} @ ${build.projectDir}")
+    }
+  }
+}
+
 tasksWithIncludedBuild("gitonium") {
   registerDelegateTask("buildGitonium", it, ":buildAll")
 }
