@@ -89,7 +89,7 @@ tasksWithIncludedBuild("stratego") {
   registerDelegateTask("buildStrategoLang", it, ":org.metaborg.meta.lang.stratego:build")
 }
 
-tasksWithIncludedBuild("spoofax.example") {
+tasksWithIncludedBuild("spoofax3.example.root") {
   registerDelegateTask("buildSpoofaxExample", it, ":buildAll")
 
   registerDelegateTask("testTiger", it, ":tiger:test")
