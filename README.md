@@ -189,3 +189,5 @@ Command-line arguments such as `--args` are not supported for tasks in the root 
 
     cd spoofax.pie/example
     ./gradlew :sdf3.cli:run --args="-V"
+
+The working directory is the directory with the `gradle.build.kts` file of the CLI project. This cannot be changed. For example, `spoofax.pie/example/sdf3/sdf3.cli/` for the `:sdf3.cli` project.
