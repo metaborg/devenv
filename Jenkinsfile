@@ -4,6 +4,7 @@
 gradlePipeline(
   upstreamProjects: [
     'metaborg/spoofax.pie/develop',
+    'metaborg/releng/spoofax3',
     'metaborg/sdf/spoofax3',
     'metaborg/stratego/spoofax3',
   ],
