@@ -8,6 +8,8 @@ gradlePipeline(
     'metaborg/stratego/spoofax3',
   ],
 
+  preBuildTask: 'repoUpdate',
+
   buildMasterBranch: false,
   buildDevelopBranch: true,
   buildOtherBranch: false,
