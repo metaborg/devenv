@@ -18,6 +18,7 @@ devenv {
   registerRepo("sdf", defaultBranch = "spoofax3")
   registerRepo("stratego", defaultBranch = "spoofax3")
   registerRepo("nabl", defaultBranch = "master")
+  registerRepo("spt", defaultBranch = "master")
   registerRepo("spoofax2", defaultUrl = "git@github.com:metaborg/spoofax", defaultBranch = "spoofax3")
   registerRepo("releng", defaultUrl = "git@github.com:metaborg/spoofax-deploy", defaultBranch = "spoofax3")
 
@@ -98,6 +99,11 @@ tasksWithIncludedBuild("stratego") {
   registerDelegateTask("buildStrategoLang", it, ":org.metaborg.meta.lang.stratego:build")
 }
 
+tasksWithIncludedBuild("spt") {
+  registerDelegateTask("buildSpt", it, ":buildAll")
+  registerDelegateTask("buildSptLang", it, ":org.metaborg.meta.lang.spt:build")
+}
+
 tasksWithIncludedBuild("spoofax3.example.root") {
   registerDelegateTask("buildSpoofaxExample", it, ":buildAll")
 
@@ -118,6 +124,12 @@ tasksWithIncludedBuild("spoofax3.example.root") {
   registerDelegateTask("runSdf3Cli", it, ":sdf3.cli:run")
   registerDelegateTask("runSdf3Eclipse", it, ":sdf3.eclipse:runEclipse")
   registerDelegateTask("runSdf3IntelliJ", it, ":sdf3.intellij:runIde")
+
+  registerDelegateTask("testSpt", it, ":spt:test")
+  registerDelegateTask("testSptSpoofax", it, ":spt.spoofax:test")
+  registerDelegateTask("runSptCli", it, ":spt.cli:run")
+  registerDelegateTask("runSptEclipse", it, ":spt.eclipse:runEclipse")
+  registerDelegateTask("runSptIntelliJ", it, ":spt.intellij:runIde")
 }
 
 fun Project.tasksWithIncludedBuild(name: String, fn: TaskContainer.(IncludedBuild) -> Unit) {
