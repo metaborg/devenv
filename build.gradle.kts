@@ -13,19 +13,19 @@ devenv {
   registerRepo("spoofax.gradle")
 
   // Spoofax Core libraries and applications.
-  registerRepo("mb-exec", defaultBranch = "master", defaultDirPath = "mb.exec")
-  registerRepo("jsglr", defaultBranch = "master")
-  registerRepo("sdf", defaultBranch = "spoofax3")
-  registerRepo("stratego", defaultBranch = "spoofax3")
-  registerRepo("nabl", defaultBranch = "master")
-  registerRepo("spoofax2", defaultUrl = "git@github.com:metaborg/spoofax", defaultBranch = "spoofax3")
-  registerRepo("releng", defaultUrl = "git@github.com:metaborg/spoofax-deploy", defaultBranch = "spoofax3")
+  registerRepo("mb-exec")
+  registerRepo("jsglr")
+  registerRepo("sdf")
+  registerRepo("stratego")
+  registerRepo("nabl")
+  registerRepo("spoofax2")
+  registerRepo("releng")
 
   // Libraries and applications.
   registerRepo("log")
   registerRepo("resource")
   registerRepo("pie")
-  registerRepo("spoofax-pie", defaultDirPath = "spoofax.pie")
+  registerRepo("spoofax-pie")
 
   // Continuous integration.
   registerRepo("jenkins.pipeline")
