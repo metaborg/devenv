@@ -3,7 +3,6 @@
 
 gradlePipeline(
   upstreamProjects: {
-    // Go over the included and/or updated repositories in repo.properties to determine the upstream projects.
     Map<String, String> props = readProperties(file: 'repo.properties')
     def repoIncludeOrUpdate = [:]
     def jobPrefixes = [:]
@@ -25,20 +24,15 @@ gradlePipeline(
         def index = key.lastIndexOf(".")
         if(index != -1) {
           def name = key.substring(0, index)
-          repoIncludeOrUpdate[key] = value == 'true'
+          repoIncludeOrUpdate[name] = repoIncludeOrUpdate[name] || value == 'true'
         }
-      } else if(!key.endsWith(".dir") && !key.endsWith(".url") ) {
-        repoIncludeOrUpdate[key] = value == 'true'
+      } else if(!key.endsWith(".dir") && !key.endsWith(".url")) {
+        repoIncludeOrUpdate[key] = repoIncludeOrUpdate[key] || value == 'true'
         jobPrefixes[key] = "metaborg/$key"
       }
     }
-    jobPrefixes.findResult { name, jobPrefix ->
-      if(repoIncludeOrUpdate[name]) {
-        def branch = jobBranches[name] ?: BRANCH_NAME
-        "$jobPrefix/$branch"
-      } else {
-        null
-      }
+    jobPrefixes.findResults { name, jobPrefix ->
+      repoIncludeOrUpdate[name] ? "$jobPrefix/${jobBranches[name] ?: BRANCH_NAME}" : null
     }
   },
 
