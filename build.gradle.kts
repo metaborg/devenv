@@ -138,15 +138,15 @@ fun TaskContainer.registerDelegateTask(name: String, build: IncludedBuild, varar
 }
 
 tasks {
-  register("runTaskInCompositeBuild") {
+  register("runTasksInCompositeBuild") {
     this.group = "composite build"
-    this.description = "Runs a task in a composite build. Task path is given via -Ptask and composite build name is given via -PcompositeBuild"
+    this.description = "Runs tasks in a composite build. Task paths are given via -PtaskPaths (separated by ;) and the name of the composite build is given via -PcompositeBuildName"
 
     try {
-      val taskPath = gradle.rootProject.property("task")
-      val compositeBuildName = gradle.rootProject.property("compositeBuild")
+      val taskPaths = gradle.rootProject.property("taskPaths").toString().split(";")
+      val compositeBuildName = gradle.rootProject.property("compositeBuildName")
       val compositeBuild = gradle.includedBuild(compositeBuildName.toString())
-      dependsOn(compositeBuild.task(taskPath.toString()))
+      dependsOn(taskPaths.map { compositeBuild.task(it) })
     } catch(e: groovy.lang.MissingPropertyException) {
       // Ignore to prevent errors during configuration
     } catch(e: UnknownDomainObjectException) {

@@ -44,6 +44,6 @@ gradlePipeline(
   buildReleaseTag: false,
   publish: false,
 
-  slack: false,
+  slack: true,
   slackChannel: "#pie-dev",
 )
