@@ -50,6 +50,7 @@ configure<DevenvSettingsExtension> {
   if(repoProperties["spoofax-pie"]?.include == true && rootDir.resolve("spoofax.pie").exists()) {
     includeBuild("spoofax.pie")
     includeBuild("spoofax.pie/core")
+    includeBuild("spoofax.pie/lwb")
     includeBuild("spoofax.pie/example")
   }
 }
