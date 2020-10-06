@@ -3,6 +3,7 @@
 This repository contains a Gradle script to manage a development environment for MetaBorg projects.
 The script supports cloning and updating Git repositories that contain the source code for MetaBorg projects, building (compiling and testing) these projects, and publishing of their artifacts.
 
+
 ## Requirements
 
 ### JDK 8
@@ -31,6 +32,7 @@ To configure Gradle's memory limits, modify (or create) the `~/.gradle/gradle.pr
 org.gradle.jvmargs=-Xmx2G -Xss16M
 ```
 
+
 ## Updating repositories
 
 To update repositories to their latest version, and to clone new repositories, run:
@@ -41,6 +43,7 @@ To update repositories to their latest version, and to clone new repositories, r
 
 On Windows, use `gradlew.bat` instead.
 
+
 ## Building
 
 To build all projects in all repositories, run:
@@ -48,6 +51,7 @@ To build all projects in all repositories, run:
 ```shell script
 ./gradlew buildAll
 ```
+
 
 ## Gradle tasks
 
@@ -59,8 +63,14 @@ Gradle can execute tasks besides just building. Run:
 to get an overview of which tasks can be executed. Interesting tasks will be in these categories:
 
 * 'Composite build tasks': tasks that will be executed on every project, such as `buildAll`.
-* 'Application tasks': tasks that will build and run applications.
 * 'Devenv tasks': tasks for managing this development environment, such as `repoStatus`.
+
+To run tasks in composite builds, use the `runTasksInCompositeBuild` task with the `compositeBuildName` specifying the name of the composite build (e.g., `spoofax3.lwb.root`), and `taskPaths` specifying a semicolon-separated list of Gradle tasks to execute (e.g. `:stratego.spoofax:cleanTest;:stratego.spoofax:test`).
+For example, to test the Stratego language in Spoofax 3, run:
+
+```shell script
+./gradlew runTasksInCompositeBuild -PtaskPaths=:stratego.spoofax:cleanTest;:stratego.spoofax:test -PcompositeBuildName=spoofax3.lwb.root
+```
 
 
 ## Importing into IntelliJ IDEA
@@ -90,7 +100,6 @@ On the `Import Options` page, select `Specific Gradle version` and choose `5.6.4
 
 When new repositories are cloned, refresh the `devenv` Gradle project. See [Refresh Gradle Project](http://www.vogella.com/tutorials/EclipseGradle/article.html#updating-classpath-with-the-latest-changes-in-the-build-file).
 
-Running tasks of a composite build in Eclipse is currently not supported.
 
 ## Modifying repositories
 
@@ -102,35 +111,70 @@ gradlew repoList
 ```
 
 Each repository has the following properties:
-* `name`: name of the repository, defined in `build.gradle.kts`.
+* `<name of the repository>`: whether the repository will be enabled/included in the build. The name of the repository must be defined in `build.gradle.kts`.
 * `update`: each repository for which `update` is `true` will be cloned or updated when running `gradlew updateRepos`.
 * `branch`: repository will be checked out to the corresponding `branch`, which defaults to the current branch of this repository.
-* `path`: repository will be cloned into the corresponding `path`, which defaults to the `name`. Changing this property will cause a new repository to be cloned, while the old repository is left untouched (in case you have made changes to it), which may cause conflicts. In that case, push your changes and delete the old repository.
+* `dir`: repository will be cloned into the corresponding `dir`, which defaults to the `name`. Changing this property will cause a new repository to be cloned, while the old repository is left untouched (in case you have made changes to it), which may cause conflicts. In that case, push your changes and delete the old repository.
 * `url`: The remote `url` will be used for cloning and pulling, which defaults to `<repoUrlPrefix>/<name>.git` where the `repoUrlPrefix` is set in `build.gradle.kts`.
 
-To enable `update` for a repository, create or open the `repo.properties` file, and add a `<name>=true` line to it. For example:
+To enable/include a repository, create or open the `repo.properties` file, and add a `<name of the repository>=true` line to it. For example:
 
 ```properties
-spoofax.eclipse=true
+spoofax.pie=true
 ```
 
-The `branch`, `path`, and `url` properties can be overridden in `repo.properties` by appending the name of the property to the key, for example:
+The `branch`, `dir`, and `url` properties can be overridden in `repo.properties` by appending the name of the property to the key, for example:
 
 ```properties
-spoofax.eclipse.branch=develop
-spoofax.eclipse.path=spoofax-eclipse
-spoofax.eclipse.url=https://github.com/metaborg/spoofax.eclipse.git
+spoofax.pie.branch=develop
+spoofax.pie.path=spoofax3
+spoofax.pie.url=https://github.com/metaborg/spoofax.pie.git
 ```
 
 ## Adding repositories
 
 To add a new repository, add a `registerRepo` call to the first `devenv` block in `build.gradle.kts`.
 The first argument is the name of the repository, which must be unique.
-Default values for `update`, `branch`, `path`, and `url` can be given as optional arguments.
+Default values for `update`, `branch`, `dir`, and `url` can be given as optional arguments.
+
 
 ## Adding new Gradle tasks
 
 In the first `tasks` block in `build.gradle.kts`, `register` a new task that depends on a task in an included build that does what you want.
+
+
+## Publishing and continuous integration
+
+Devenv is not used for publishing, only for development and builds.
+Publishing the artifacts of a repository is done via that repository.
+
+The non-master branches of devenv are [automatically built with our build farm](https://buildfarm.metaborg.org/view/Spoofax-PIE/job/metaborg/job/devenv/).
+Whenever a repository that devenv includes/updates has changed, the build for devenv is triggered automatically.
+
+
+## Working with Spoofax 2 projects
+
+Due to the complicated build and structure of Spoofax 2, working with Spoofax 2 projects requires some special instructions.
+
+Devenv can build several Spoofax 2 projects from source.
+Spoofax 2 projects are included via the `releng` repository (similar to how it is done with Maven in `spoofax-releng`).
+Java projects are included by `releng/gradle/java/settings.gradle.kts`, whereas Spoofax 2 language projects are included by `releng/gradle/language/settings.gradle.kts`.
+These projects are only included if their corresponding repository is set to update in the `repo.properties` file of this repository.
+
+Besides building and using these Spoofax 2 projects from source, we also depend on artifacts of Spoofax 2.
+The version of the Spoofax 2 artifacts that we depend on is controlled by the value of `systemProp.spoofax2Version` in `gradle.properties`.
+
+> _Note_: Gradle only checks for new SNAPSHOT versions once a day. To force download new SNAPSHOTs the command line, use the Gradle `--refresh-dependencies` command line option. For example:
+>
+>     ./gradlew buildAll --refresh-dependencies
+>
+> To force this in IntelliJ, right-click the project in the Gradle panel and choose _Refresh Gradle Dependencies_. If you've already refreshed the dependencies on the command line, simply reimport the Gradle projects if IntelliJ doesn't see the new dependencies.
+
+Publishing the artifacts of a repository requires all dependencies to have non-SNAPSHOT versions.
+Therefore, the Spoofax 2 version should be kept to a non-SNAPSHOT version as much as possible.
+Furthermore, artifacts from Spoofax 2 repositories cannot be published via Gradle.
+Spoofax 2 is published as a whole via [spoofax-releng with these instructions](http://www.metaborg.org/en/latest/source/dev/release.html).
+
 
 ## Shared and personal development environments
 
@@ -139,19 +183,6 @@ To create a shared development environment, create a new branch of this reposito
 To create a personal development environment, fork this repository and set up the `repo.properties` file in your fork.
 
 In both cases, pull in changes from `master` of `origin` to receive updates to the build script and list of repositories.
-
-## Depending on Spoofax 2 snapshot
-Spoofax 3 has some dependencies on specific release versions of Spoofax 2 libraries. If for some reason you need to depend on the latest snapshot version of Spoofax 2 such as `2.6.0-SNAPSHOT`, do the following:
-
-- add the `spoofax.gradle` project [to your development environment](#Shared and personal development environments)
-- change the `spoofaxVersion` variable in `spoofax.gradle/plugin/build.gradle.kts` to the desired snapshot version
-- change the `spoofax2Version` variable in `spoofax.pie/core/spoofax.depconstraints/build.gradle.kts` to the desired snapshot version
-
-> _Note_: Gradle does not automatically check or download the latest snapshots. To force this on the command line, use the Gradle `--refresh-dependencies` command line option. For example:
->
->     ./gradlew buildAll --refresh-dependencies
->
-> To force this in IntelliJ, right-click the project in the Gradle panel and choose _Refresh Gradle Dependencies_. If you've already refreshed the dependencies on the command line, simply reimport the Gradle projects if IntelliJ doesn't see the new dependencies.
 
 
 ## Behind the scenes
@@ -163,6 +194,7 @@ We include all subdirectories (which are usually repositories) in the composite 
 
 The repository update functionality comes from the `org.metaborg.gradle.config.devenv` plugin which is applied at the top of `build.gradle.kts`.
 This plugin exposes the `devenv` extension which allows configuration of repositories.
+
 
 ## Troubleshooting
 In general, ensure you're calling `./gradlew` on Linux and MacOS (or `gradlew.bat` on Windows) instead of your local Gradle installation. The local one is most likely too new.

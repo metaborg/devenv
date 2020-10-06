@@ -40,7 +40,9 @@ configure<DevenvSettingsExtension> {
   includeBuildsFromSubDirs(true)
 
   if(repoProperties["releng"]?.include == true && rootDir.resolve("releng").exists()) {
-    includeBuild("releng/gradle") // Included build is in a different directory in releng.
+    // Included builds are in a different directory in releng.
+    includeBuild("releng/gradle/java")
+    includeBuild("releng/gradle/language")
   }
 
   if(repoProperties["pie"]?.include == true && rootDir.resolve("pie").exists()) {
