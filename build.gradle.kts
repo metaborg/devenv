@@ -17,6 +17,7 @@ devenv {
   registerRepo("jsglr")
   registerRepo("sdf")
   registerRepo("stratego")
+  registerRepo("esv")
   registerRepo("nabl")
   registerRepo("spoofax2")
   registerRepo("releng")
