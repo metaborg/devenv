@@ -32,12 +32,6 @@ configure<DevenvSettingsExtension> {
     includeBuild("coronium/example")
   }
 
-  // Disabled for now, spoofax.gradle is included via the releng/gradle/java build.
-//  if(repoProperties["spoofax.gradle"]?.include == true && rootDir.resolve("spoofax.gradle").exists()) {
-//    includeBuild("spoofax.gradle/plugin")
-//    includeBuild("spoofax.gradle/example")
-//  }
-
   if(repoProperties["releng"]?.include == true && rootDir.resolve("releng").exists()) {
     includeBuild("releng/gradle/java")
     includeBuild("releng/gradle/language")
