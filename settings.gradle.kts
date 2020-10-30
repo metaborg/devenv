@@ -28,27 +28,40 @@ apply(plugin = "org.metaborg.gradle.config.devenv-settings")
 // Manually include nested composite builds, as IntelliJ does not support them.
 configure<DevenvSettingsExtension> {
   if(repoProperties["coronium"]?.include == true && rootDir.resolve("coronium").exists()) {
-    includeBuild("coronium/plugin")
-    includeBuild("coronium/example")
+    includeBuildWithName("coronium", "coronium.root")
+    includeBuildWithName("coronium/plugin", "coronium")
+    includeBuildWithName("coronium/example", "coronium.example")
   }
 
   if(repoProperties["releng"]?.include == true && rootDir.resolve("releng").exists()) {
-    includeBuild("releng/gradle/java")
-    includeBuild("releng/gradle/language")
+    includeBuildWithName("releng/gradle/java", "spoofax2.releng.java.root")
+    includeBuildWithName("releng/gradle/language", "spoofax2.releng.language.root")
   }
 
   // HACK: include rest of the builds AFTER including the Gradle plugins, because included build order matters.
   includeBuildsFromSubDirs(true)
 
   if(repoProperties["pie"]?.include == true && rootDir.resolve("pie").exists()) {
-    includeBuild("pie/core")
-    includeBuild("pie/lang")
-    includeBuild("pie/bench")
+    includeBuildWithName("pie/core", "pie.core.root")
+    includeBuildWithName("pie/lang", "pie.lang.root")
+    includeBuildWithName("pie/bench", "pie.bench")
   }
   if(repoProperties["spoofax-pie"]?.include == true && rootDir.resolve("spoofax.pie").exists()) {
-    includeBuild("spoofax.pie")
-    includeBuild("spoofax.pie/core")
-    includeBuild("spoofax.pie/lwb")
-    includeBuild("spoofax.pie/example")
+    includeBuildWithName("spoofax.pie", "spoofax3.root")
+    includeBuildWithName("spoofax.pie/core", "spoofax3.core.root")
+    includeBuildWithName("spoofax.pie/lwb", "spoofax3.lwb.root")
+    includeBuildWithName("spoofax.pie/example", "spoofax3.example.root")
+  }
+}
+
+fun includeBuildWithName(dir: String, name: String) {
+  includeBuild(dir) {
+    try {
+      ConfigurableIncludedBuild::class.java
+        .getDeclaredMethod("setName", String::class.java)
+        .invoke(this, name)
+    } catch(e: NoSuchMethodException) {
+      // Running Gradle < 6, no need to set the name, ignore.
+    }
   }
 }
