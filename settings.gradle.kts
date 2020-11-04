@@ -25,32 +25,56 @@ buildscript {
 apply(plugin = "org.metaborg.gradle.config.devenv-settings")
 
 // Include builds from subdirectories, but only if it is from an included repository.
+// The order of these includes is important. Gradle plugins must be included BEFORE they are used!
 // Manually include nested composite builds, as IntelliJ does not support them.
 configure<DevenvSettingsExtension> {
-  if(repoProperties["coronium"]?.include == true && rootDir.resolve("coronium").exists()) {
+  // Independent Gradle plugins.
+  includeSimple("gradle.config")
+  includeSimple("gitonium")
+  if(isIncluded("coronium")) {
     includeBuildWithName("coronium", "coronium.root")
     includeBuildWithName("coronium/plugin", "coronium")
     includeBuildWithName("coronium/example", "coronium.example")
   }
 
-  if(repoProperties["releng"]?.include == true && rootDir.resolve("releng").exists()) {
+  // Independent common Java libraries.
+  includeSimple("log")
+  includeSimple("resource")
+
+  // PIE Java libraries.
+  if(isIncluded("pie")) {
+    includeBuildWithName("pie/core", "pie.core.root")
+    includeBuildWithName("pie/bench", "pie.bench")
+  }
+
+  // Spoofax 2 Java libraries, languages, and Gradle plugin.
+  if(isIncluded("releng")) {
     includeBuildWithName("releng/gradle/java", "spoofax2.releng.java.root")
     includeBuildWithName("releng/gradle/language", "spoofax2.releng.language.root")
   }
 
-  // HACK: include rest of the builds AFTER including the Gradle plugins, because included build order matters.
-  includeBuildsFromSubDirs(true)
-
-  if(repoProperties["pie"]?.include == true && rootDir.resolve("pie").exists()) {
-    includeBuildWithName("pie/core", "pie.core.root")
+  // PIE DSL (include after Spoofax 2, since it uses the Spoofax 2 Gradle plugin)
+  if(isIncluded("pie")) {
     includeBuildWithName("pie/lang", "pie.lang.root")
-    includeBuildWithName("pie/bench", "pie.bench")
   }
-  if(repoProperties["spoofax-pie"]?.include == true && rootDir.resolve("spoofax.pie").exists()) {
+
+  // Spoofax 3 Java libraries, languages, and Gradle plugins.
+  if(isIncluded("spoofax-pie", "spoofax.pie")) {
     includeBuildWithName("spoofax.pie", "spoofax3.root")
     includeBuildWithName("spoofax.pie/core", "spoofax3.core.root")
     includeBuildWithName("spoofax.pie/lwb", "spoofax3.lwb.root")
     includeBuildWithName("spoofax.pie/example", "spoofax3.example.root")
+  }
+
+  // Jenkins CI
+  includeSimple("jenkins.pipeline")
+}
+
+fun DevenvSettingsExtension.isIncluded(id: String, dir: String = id) = repoProperties[id]?.include == true && rootDir.resolve(dir).exists()
+
+fun DevenvSettingsExtension.includeSimple(id: String) {
+  if(isIncluded(id)) {
+    includeBuildWithName(id, id)
   }
 }
 

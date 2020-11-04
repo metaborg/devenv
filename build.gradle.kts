@@ -1,9 +1,15 @@
-plugins {
-  id("org.metaborg.gradle.config.devenv") version "0.3.21"
-  id("org.metaborg.gradle.config.root-project") version "0.3.21"
+buildscript {
+  repositories {
+    maven("https://artifacts.metaborg.org/content/groups/public/")
+  }
+  dependencies {
+    classpath("org.metaborg:gradle.config:0.3.21")
+  }
 }
+apply(plugin = "org.metaborg.gradle.config.devenv")
+apply(plugin = "org.metaborg.gradle.config.root-project")
 
-devenv {
+configure<mb.gradle.config.devenv.DevenvExtension> {
   repoUrlPrefix = "git@github.com:metaborg"
 
   // Gradle plugins.
