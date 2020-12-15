@@ -1,42 +1,13 @@
+// Apply plugin the old way for compatibility with both Gradle 5.6.4 and 6+.
 buildscript {
   repositories {
     maven("https://artifacts.metaborg.org/content/groups/public/")
   }
   dependencies {
-    classpath("org.metaborg:gradle.config:0.3.21")
+    classpath("org.metaborg:gradle.config:0.4.2")
   }
 }
-apply(plugin = "org.metaborg.gradle.config.devenv")
 apply(plugin = "org.metaborg.gradle.config.root-project")
-
-configure<mb.gradle.config.devenv.DevenvExtension> {
-  repoUrlPrefix = "git@github.com:metaborg"
-
-  // Gradle plugins.
-  registerRepo("gradle.config")
-  registerRepo("gitonium")
-  registerRepo("coronium")
-  registerRepo("spoofax.gradle")
-
-  // Spoofax Core libraries and applications.
-  registerRepo("mb-exec")
-  registerRepo("jsglr")
-  registerRepo("sdf")
-  registerRepo("stratego")
-  registerRepo("esv")
-  registerRepo("nabl")
-  registerRepo("spoofax2")
-  registerRepo("releng")
-
-  // Libraries and applications.
-  registerRepo("log")
-  registerRepo("resource")
-  registerRepo("pie")
-  registerRepo("spoofax-pie")
-
-  // Continuous integration.
-  registerRepo("jenkins.pipeline")
-}
 
 tasks.register("includedBuilds") {
   doLast {

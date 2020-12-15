@@ -37,7 +37,7 @@ gradlePipeline(
     }
   },
 
-  preBuildTask: 'repoUpdate',
+  preBuildCommand: './repo update',
 
   buildMainBranch: false,
   buildTag: false,

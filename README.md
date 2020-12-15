@@ -1,47 +1,49 @@
 # MetaBorg development environment
 
 This repository contains a Gradle script to manage a development environment for MetaBorg projects.
-The script supports cloning and updating Git repositories that contain the source code for MetaBorg projects, building (compiling and testing) these projects, and publishing of their artifacts.
+The script supports cloning and updating Git repositories that contain the source code for MetaBorg projects, and for building (compiling and testing) these projects.
 
 
 ## Requirements
 
-### JDK 8
+### JDK
 
-To run Gradle and build this repository, a Java Development Kit (JDK) of version 8 is needed.
-Higher versions of the JDK (9+) are currently not supported, as not all our Java code is compatible with Java 9+ yet.
+To run Gradle and build this repository, a Java Development Kit (JDK) is needed.
+JDK versions between 8 and 11 are supported. Higher versions may work, but have not been tested yet.
 
-We recommend to [install JDK8 from AdoptOpenJDK](https://adoptopenjdk.net/), or to use your favourite package manager (e.g., `brew install adoptopenjdk8` on macOS, `choco install adoptopenjdk8` on Windows).
+We recommend to [install JDK11 from AdoptOpenJDK](https://adoptopenjdk.net/?variant=openjdk11&jvmVariant=hotspot), or to use your favourite package manager (e.g., `brew install adoptopenjdk11` on macOS, `choco install adoptopenjdk11` on Windows).
+
+If you require JDK8 for compatibility reasons, [install JDK8 from AdoptOpenJDK](https://adoptopenjdk.net/?variant=openjdk8&jvmVariant=hotspot), or to use your favourite package manager (e.g., `brew install adoptopenjdk8` on macOS, `choco install adoptopenjdk8` on Windows).
 
 ### Gradle
 
-#### Installing Gradle 5.6.4
-
-Gradle version 5.6.4 (exactly) is needed.
+Gradle is the build system we use to build devenv.
+Most Gradle versions between 5.6.4 and 6.7.1 should be supported, although we currently test with Gradle 5.6.4 and 6.7.1.
 However, to build on the command-line, Gradle does not need to be installed, as this repository includes a Gradle wrapper script (`gradlew`/`gradlew.bat`) which automatically downloads and runs Gradle 5.6.4.
 
-If you plan to import this project into IntelliJ, you do need to install Gradle 5.6.4.
-On macOS/Linux, we recommend installing Gradle 5.6.4 using the [SDKMAN!](https://sdkman.io/) package manager with `sdk install gradle 5.6.4`.
-On Windows, we recommend [Chocolatey](https://chocolatey.org/) with `choco install gradle --version=5.6.4`.
-
-#### Configuring Gradle's memory limits
-
-To configure Gradle's memory limits, modify (or create) the `~/.gradle/gradle.properties` file and add the following:
-
-```properties
-org.gradle.jvmargs=-Xmx2G -Xss16M
-```
+If you plan to import this project into IntelliJ, you do need to install Gradle.
+On macOS/Linux, we recommend installing Gradle 6.7.1 using the [SDKMAN!](https://sdkman.io/) package manager with `sdk install gradle 6.7.1`.
+On Windows, we recommend [Chocolatey](https://chocolatey.org/) with `choco install gradle --version=6.7.1`.
+In case you use Gradle 6.7.1 in IntelliJ, use the `gradle` command instead of `./gradlew` to ensure that command-line builds use the same Gradle version and cache.
 
 
 ## Updating repositories
 
+Repositories are updated with the `repo` script.
 To update repositories to their latest version, and to clone new repositories, run:
 
 ```shell script
-./gradlew repoUpdate
+./repo update
 ```
 
-On Windows, use `gradlew.bat` instead.
+On Windows, use `repo.bat` instead.
+For a list of other operations possible on repositories, run:
+
+```shell script
+./repo tasks
+```
+
+and look for tasks under group "Devenv repository tasks".
 
 
 ## Building
@@ -60,12 +62,9 @@ Gradle can execute tasks besides just building. Run:
 ```shell script
 ./gradlew tasks
 ```
-to get an overview of which tasks can be executed. Interesting tasks will be in these categories:
+to get an overview of which tasks can be executed.
 
-* 'Composite build tasks': tasks that will be executed on every project, such as `buildAll`.
-* 'Devenv tasks': tasks for managing this development environment, such as `repoStatus`.
-
-To run tasks in composite builds, use the `runTasksInCompositeBuild` task with the `compositeBuildName` specifying the name of the composite build (e.g., `spoofax3.lwb.root`), and `taskPaths` specifying a semicolon-separated list of Gradle tasks to execute (e.g. `:stratego.spoofax:cleanTest;:stratego.spoofax:test`).
+To run tasks in composite builds, use the `runTasksInCompositeBuild` task with the `compositeBuildName` specifying the name of the composite build, and `taskPaths` specifying a semicolon-separated list of Gradle tasks to execute.
 For example, to test the Stratego language in Spoofax 3, run:
 
 ```shell script
@@ -76,18 +75,18 @@ For example, to test the Stratego language in Spoofax 3, run:
 ## Importing into IntelliJ IDEA
 
 [Import the project as a Gradle project](https://www.jetbrains.com/help/idea/gradle.html#gradle_import_project_start).
-In the wizard, choose _Use Gradle from_: _'Specified location_, and choose the location where Gradle 5.6.4 is installed.
-With SDKMAN! this would be: `~/.sdkman/candidates/gradle/5.6.4`, and with Chocolatey: `C:/ProgramData/chocolatey/lib/gradle/tools/gradle-5.6.4`.
+In the wizard, choose _Use Gradle from_: _'Specified location_, and choose the location where Gradle is installed.
+With SDKMAN! this would be: `~/.sdkman/candidates/gradle/6.7.1`, and with Chocolatey: `C:/ProgramData/chocolatey/lib/gradle/tools/gradle-6.7.1`.
 Also ensure that _Build and run using_ and _Run tests using_ are both set to _Gradle (default)_.
 If the wizard does not show these settings, go to the [Gradle Settings](https://www.jetbrains.com/help/idea/gradle-settings.html) to configure these settings.
 
-When new repositories are cloned, [re-import a linked Gradle project﻿](https://www.jetbrains.com/help/idea/work-with-gradle-projects.html#gradle_refresh_project).
+When new repositories are cloned, [re-import a linked Gradle project](https://www.jetbrains.com/help/idea/work-with-gradle-projects.html#gradle_refresh_project).
 
 To run Gradle tasks inside IntelliJ, see [Run Gradle tasks](https://www.jetbrains.com/help/idea/work-with-gradle-tasks.html#gradle_tasks).
 Similarly, for testing, see [Testing in Gradle](https://www.jetbrains.com/help/idea/work-with-tests-in-gradle.html).
 Gradle tasks and tests can be executed in Debug mode, which also enables debugging of any VMs that Gradle starts, such as those for running an application or testing, enabling debugging of applications and tests.
 
-If files in a repository are marked as ignored, add that repository as a version control root. See [Associate a directory with a version control system﻿](https://www.jetbrains.com/help/idea/enabling-version-control.html#associate_directory_with_VCS) for more info.
+If files in a repository are marked as ignored, add that repository as a version control root. See [Associate a directory with a version control system](https://www.jetbrains.com/help/idea/enabling-version-control.html#associate_directory_with_VCS) for more info.
 
 
 ## Importing into Eclipse
@@ -96,7 +95,7 @@ Eclipse supports Gradle through the [buildship](https://projects.eclipse.org/pro
 However, using Eclipse is discouraged, as IntelliJ has much better support for Gradle.
 
 Import the project as an existing Gradle project. See [Import an existing Gradle project](http://www.vogella.com/tutorials/EclipseGradle/article.html#import-an-existing-gradle-project).
-On the `Import Options` page, select `Specific Gradle version` and choose `5.6.4`.
+On the `Import Options` page, select `Specific Gradle version` and choose `6.7.1`.
 
 When new repositories are cloned, refresh the `devenv` Gradle project. See [Refresh Gradle Project](http://www.vogella.com/tutorials/EclipseGradle/article.html#updating-classpath-with-the-latest-changes-in-the-build-file).
 
@@ -107,40 +106,34 @@ By default, no repositories will be cloned or updated, they must be explicitly i
 List all available repositories and their properties with:
 
 ```shell script
-gradlew repoList
+./repo list
 ```
 
 Each repository has the following properties:
-* `<name of the repository>`: whether the repository will be enabled/included in the build. The name of the repository must be defined in `build.gradle.kts`.
-* `update`: each repository for which `update` is `true` will be cloned or updated when running `gradlew updateRepos`.
-* `branch`: repository will be checked out to the corresponding `branch`, which defaults to the current branch of this repository.
-* `dir`: repository will be cloned into the corresponding `dir`, which defaults to the `name`. Changing this property will cause a new repository to be cloned, while the old repository is left untouched (in case you have made changes to it), which may cause conflicts. In that case, push your changes and delete the old repository.
-* `url`: The remote `url` will be used for cloning and pulling, which defaults to `<repoUrlPrefix>/<name>.git` where the `repoUrlPrefix` is set in `build.gradle.kts`.
+* `<name>`: defines the name of the repository, and whether the repository will be included in the build.
+* `<name>.update`: each repository for which `update` is `true` will be cloned or updated when running `./repo update`.
+* `<name>.branch`: repository will be checked out to the corresponding `branch`, which defaults to the current branch of this repository.
+* `<name>.dir`: repository will be cloned into the corresponding `dir`, which defaults to `<name>`. Changing this property will cause a new repository to be cloned, while the old repository is left untouched (in case you have made changes to it), which may cause conflicts. In that case, push your changes and delete the old repository.
+* `<name>.url`: The remote `url` will be used for cloning and pulling, which defaults to `<urlPrefix>/<name>.git`.
 
-To enable/include a repository, create or open the `repo.properties` file, and add a `<name of the repository>=true` line to it. For example:
+To enable/include a repository, create or open the `repo.properties` file, and add a `<name>=true` line to it. For example:
 
 ```properties
-spoofax.pie=true
+spoofax-pie=true
 ```
 
 The `branch`, `dir`, and `url` properties can be overridden in `repo.properties` by appending the name of the property to the key, for example:
 
 ```properties
-spoofax.pie.branch=develop
-spoofax.pie.path=spoofax3
-spoofax.pie.url=https://github.com/metaborg/spoofax.pie.git
+spoofax-pie.branch=develop
+spoofax-pie.dir=spoofax3
+spoofax-pie.url=https://github.com/Gohla/spoofax.pie.git
 ```
-
-## Adding repositories
-
-To add a new repository, add a `registerRepo` call to the first `devenv` block in `build.gradle.kts`.
-The first argument is the name of the repository, which must be unique.
-Default values for `update`, `branch`, `dir`, and `url` can be given as optional arguments.
 
 
 ## Adding new Gradle tasks
 
-In the first `tasks` block in `build.gradle.kts`, `register` a new task that depends on a task in an included build that does what you want.
+Use `tasksWithIncludedBuild` to register tasks from included builds, or use the regular Gradle way of registering tasks with `register` in a `tasks` block.
 
 
 ## Publishing and continuous integration
@@ -192,18 +185,20 @@ This project uses the [Gradle Kotlin DSL](https://docs.gradle.org/current/usergu
 We use a Gradle feature called [Composite Builds](https://docs.gradle.org/current/userguide/composite_builds.html), which allow multiple Gradle builds to be easily composed together.
 We include all subdirectories (which are usually repositories) in the composite build, achieved in the last code block in `settings.gradle.kts`.
 
-The repository update functionality comes from the `org.metaborg.gradle.config.devenv` plugin which is applied at the top of `build.gradle.kts`.
+The repository functionality comes from the `org.metaborg.gradle.config.devenv-settings` and `org.metaborg.gradle.config.devenv-repositories` plugin which are applied at the top of `settings.gradle.kts`/`build.gradle.kts`.
 This plugin exposes the `devenv` extension which allows configuration of repositories.
 
 
 ## Troubleshooting
-In general, ensure you're calling `./gradlew` on Linux and MacOS (or `gradlew.bat` on Windows) instead of your local Gradle installation. The local one is most likely too new.
+In general, ensure you're calling `./repo` and `./gradlew` on Linux and MacOS (or `repo.bat` and `gradlew.bat` on Windows) instead of your local Gradle installation. The local one may be too old or too new.
 
 ### Task 'buildAll' not found in root project 'devenv'
 You have 'configure on demand' enabled, such as `org.gradle.configureondemand=true` in your `~/.gradle/gradle.properties` file. Disable this.
 
 ### Expiring Daemon because JVM heap space is exhausted
-You didn't set the memory limits found at the start of this README, or they need to be increased even more.
+The memory limits in `gradle.properties` may be too low, and may need to be increased.
+Running the build without `--parallel` may decrease memory pressure, as less tasks are executed concurrently.
+Or, there is a memory leak in the build: please make a heap dump and send this to the developers so it can be addressed.
 
 ### Could not create service of type FileAccessTimeJournal using GradleUserHomeScopeServices.createFileAccessTimeJournal()
 The permissions in your `~/.gradle/` directory are too restrictive. For example, if you're using WSL, ensure the directory is not a symlink to the Windows' `.gradle/` directory.
