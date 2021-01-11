@@ -18,13 +18,13 @@ If you require JDK8 for compatibility reasons, [install JDK8 from AdoptOpenJDK](
 ### Gradle
 
 Gradle is the build system we use to build devenv.
-Most Gradle versions between 5.6.4 and 6.7.1 should be supported, although we currently test with Gradle 5.6.4 and 6.7.1.
+Most Gradle versions between 5.6.4 and 6.8 should be supported, although we currently test with Gradle 5.6.4 and 6.8.
 However, to build on the command-line, Gradle does not need to be installed, as this repository includes a Gradle wrapper script (`gradlew`/`gradlew.bat`) which automatically downloads and runs Gradle 5.6.4.
 
 If you plan to import this project into IntelliJ, you do need to install Gradle.
-On macOS/Linux, we recommend installing Gradle 6.7.1 using the [SDKMAN!](https://sdkman.io/) package manager with `sdk install gradle 6.7.1`.
-On Windows, we recommend [Chocolatey](https://chocolatey.org/) with `choco install gradle --version=6.7.1`.
-In case you use Gradle 6.7.1 in IntelliJ, use the `gradle` command instead of `./gradlew` to ensure that command-line builds use the same Gradle version and cache.
+On macOS/Linux, we recommend installing Gradle 6.8 using the [SDKMAN!](https://sdkman.io/) package manager with `sdk install gradle 6.8`.
+On Windows, we recommend [Chocolatey](https://chocolatey.org/) with `choco install gradle --version=6.8`.
+In case you use Gradle 6.8 in IntelliJ, use the `gradle` command instead of `./gradlew` to ensure that command-line builds use the same Gradle version and cache.
 
 
 ## Updating repositories
@@ -76,7 +76,7 @@ For example, to test the Stratego language in Spoofax 3, run:
 
 [Import the project as a Gradle project](https://www.jetbrains.com/help/idea/gradle.html#gradle_import_project_start).
 In the wizard, choose _Use Gradle from_: _'Specified location_, and choose the location where Gradle is installed.
-With SDKMAN! this would be: `~/.sdkman/candidates/gradle/6.7.1`, and with Chocolatey: `C:/ProgramData/chocolatey/lib/gradle/tools/gradle-6.7.1`.
+With SDKMAN! this would be: `~/.sdkman/candidates/gradle/6.8`, and with Chocolatey: `C:/ProgramData/chocolatey/lib/gradle/tools/gradle-6.8`.
 Also ensure that _Build and run using_ and _Run tests using_ are both set to _Gradle (default)_.
 If the wizard does not show these settings, go to the [Gradle Settings](https://www.jetbrains.com/help/idea/gradle-settings.html) to configure these settings.
 
@@ -95,7 +95,7 @@ Eclipse supports Gradle through the [buildship](https://projects.eclipse.org/pro
 However, using Eclipse is discouraged, as IntelliJ has much better support for Gradle.
 
 Import the project as an existing Gradle project. See [Import an existing Gradle project](http://www.vogella.com/tutorials/EclipseGradle/article.html#import-an-existing-gradle-project).
-On the `Import Options` page, select `Specific Gradle version` and choose `6.7.1`.
+On the `Import Options` page, select `Specific Gradle version` and choose `6.8`.
 
 When new repositories are cloned, refresh the `devenv` Gradle project. See [Refresh Gradle Project](http://www.vogella.com/tutorials/EclipseGradle/article.html#updating-classpath-with-the-latest-changes-in-the-build-file).
 
@@ -150,23 +150,35 @@ Whenever a repository that devenv includes/updates has changed, the build for de
 Due to the complicated build and structure of Spoofax 2, working with Spoofax 2 projects requires some special instructions.
 
 Devenv can build several Spoofax 2 projects from source.
-Spoofax 2 projects are included via the `releng` repository (similar to how it is done with Maven in `spoofax-releng`).
+Spoofax 2 repositories (such as `sdf` and `nabl`) are available in devenv, but their projects are included via the `releng` repository (similar to how it is done with Maven in `spoofax-releng`).
 Java projects are included by `releng/gradle/java/settings.gradle.kts`, whereas Spoofax 2 language projects are included by `releng/gradle/language/settings.gradle.kts`.
-These projects are only included if their corresponding repository is set to update in the `repo.properties` file of this repository.
+These projects are only included if their corresponding repository is set to `update` in the `repo.properties` file of this repository.
 
-Besides building and using these Spoofax 2 projects from source, we also depend on artifacts of Spoofax 2.
+### Orthogonal release of Spoofax 2 artifacts
+
+We publish orthogonal releases of most Spoofax 2 artifacts under the `org.metaborg.devenv` group ID so that we can easily modify Spoofax 2 projects while still being able to easily publish a new version of Spoofax 3.
+It is important to depend on projects using the `org.metaborg.devenv` group ID, to ensure that the dependency points to a project in devenv.
+Furthermore, we also publish an orthogonal version of the Spoofax 2 Gradle plugin with plugin IDs modified to include `.devenv`, such as `org.metaborg.devenv.spoofax.gradle.langspec`.
+It is also important to use these plugins, as they are built together with the other `org.metaborg.devenv` artifacts.
+
+These orthogonal versions are published via the `releng` repository.
+The version of these orthogonal artifacts that we depend on is controlled by the value of `systemProp.spoofax2DevenvVersion` in `gradle.properties`.
+
+### Regular Spoofax 2 artifacts
+
+However, not all of Spoofax 2's repositories and projects are included in devenv.
+Therefore, we also need to depend on artifacts from Spoofax 2.
 The version of the Spoofax 2 artifacts that we depend on is controlled by the value of `systemProp.spoofax2Version` in `gradle.properties`.
+
+The Spoofax 2 version can be set to a `SNAPSHOT`, but this should be avoided at all cost, because:
+* Publishing the artifacts of a repository requires all dependencies to have non-SNAPSHOT versions.
+* The projects in devenv need to be compatible with the chosen version of Spoofax 2, and SNAPSHOTs can change at any time.
 
 > _Note_: Gradle only checks for new SNAPSHOT versions once a day. To force download new SNAPSHOTs the command line, use the Gradle `--refresh-dependencies` command line option. For example:
 >
 >     ./gradlew buildAll --refresh-dependencies
 >
 > To force this in IntelliJ, right-click the project in the Gradle panel and choose _Refresh Gradle Dependencies_. If you've already refreshed the dependencies on the command line, simply reimport the Gradle projects if IntelliJ doesn't see the new dependencies.
-
-Publishing the artifacts of a repository requires all dependencies to have non-SNAPSHOT versions.
-Therefore, the Spoofax 2 version should be kept to a non-SNAPSHOT version as much as possible.
-Furthermore, artifacts from Spoofax 2 repositories cannot be published via Gradle.
-Spoofax 2 is published as a whole via [spoofax-releng with these instructions](http://www.metaborg.org/en/latest/source/dev/release.html).
 
 
 ## Shared and personal development environments
@@ -175,7 +187,7 @@ To create a shared development environment, create a new branch of this reposito
 
 To create a personal development environment, fork this repository and set up the `repo.properties` file in your fork.
 
-In both cases, pull in changes from `master` of `origin` to receive updates to the build script and list of repositories.
+In both cases, pull in changes from `develop` of `origin` to receive updates to the build script and list of repositories.
 
 
 ## Behind the scenes

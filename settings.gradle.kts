@@ -41,12 +41,14 @@ configure<mb.gradle.config.devenv.DevenvSettingsExtension> {
 
   // PIE Java libraries.
   if(isRepositoryIncluded("pie")) {
+    includeBuildWithName("pie", "pie.root")
     includeBuildWithName("pie/core", "pie.core.root")
     includeBuildWithName("pie/bench", "pie.bench")
   }
 
   // Spoofax 2 Java libraries, languages, and Gradle plugin.
   if(isRepositoryIncluded("releng")) {
+    includeBuildWithName("releng/gradle", "spoofax2.releng.root")
     includeBuildWithName("releng/gradle/java", "spoofax2.releng.java.root")
     includeBuildWithName("releng/gradle/language", "spoofax2.releng.language.root")
   }
