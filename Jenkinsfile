@@ -45,6 +45,7 @@ gradlePipeline(
   publish: false,
 
   gradleParallel: false,
+  gradleMaxWorkers: '1',
 
   slack: true,
   slackChannel: "#pie-dev",
