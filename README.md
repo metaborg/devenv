@@ -18,14 +18,12 @@ If you require JDK8 for compatibility reasons, [install JDK8 from AdoptOpenJDK](
 ### Gradle
 
 Gradle is the build system we use to build devenv.
-Most Gradle versions between 5.6.4 and 6.8 should be supported, although we currently test with Gradle 5.6.4 and 6.8.
-However, to build on the command-line, Gradle does not need to be installed, as this repository includes a Gradle wrapper script (`gradlew`/`gradlew.bat`) which automatically downloads and runs Gradle 5.6.4.
+However, to build on the command-line, Gradle does not need to be installed, as this repository includes a Gradle wrapper script (`gradlew`/`gradlew.bat`) which automatically downloads and runs Gradle 6.8.
 
 If you plan to import this project into IntelliJ, you do need to install Gradle.
 On macOS/Linux, we recommend installing Gradle 6.8 using the [SDKMAN!](https://sdkman.io/) package manager with `sdk install gradle 6.8`.
 On Windows, we recommend [Chocolatey](https://chocolatey.org/) with `choco install gradle --version=6.8`.
 In case you use Gradle 6.8 in IntelliJ, use the `gradle` command instead of `./gradlew` to ensure that command-line builds use the same Gradle version and cache.
-
 
 ## Updating repositories
 

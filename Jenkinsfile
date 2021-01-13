@@ -47,5 +47,5 @@ gradlePipeline(
   gradleParallel: false,
 
   slack: true,
-  slackChannel: "#pie-dev",
+  slackChannel: "#spoofax3-dev",
 )
