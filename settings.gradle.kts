@@ -17,7 +17,7 @@ buildscript {
     maven("https://artifacts.metaborg.org/content/groups/public/")
   }
   dependencies {
-    classpath("org.metaborg:gradle.config:0.4.2")
+    classpath("org.metaborg:gradle.config:0.4.4")
   }
 }
 apply(plugin = "org.metaborg.gradle.config.devenv-settings")
