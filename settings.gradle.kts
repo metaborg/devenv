@@ -38,6 +38,9 @@ configure<mb.gradle.config.devenv.DevenvSettingsExtension> {
   // Independent common Java libraries.
   includeBuildIfRepositoryIncluded("log")
   includeBuildIfRepositoryIncluded("resource")
+  if(isRepositoryIncluded("common")) {
+    includeBuildWithName("common", "common.root")
+  }
 
   // PIE Java libraries.
   if(isRepositoryIncluded("pie")) {
