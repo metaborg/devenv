@@ -52,7 +52,6 @@ To build all projects in all repositories, run:
 ./gradlew buildAll
 ```
 
-
 ## Gradle tasks
 
 Gradle can execute tasks besides just building. Run:
@@ -62,13 +61,32 @@ Gradle can execute tasks besides just building. Run:
 ```
 to get an overview of which tasks can be executed.
 
-To run tasks in composite builds, use the `runTasksInCompositeBuild` task with the `compositeBuildName` specifying the name of the composite build, and `taskPaths` specifying a semicolon-separated list of Gradle tasks to execute.
-For example, to test the Stratego language in Spoofax 3, run:
-
+Because we use a mix of composite and multi-project builds, additional steps are required to traverse the hierarchy to find and run tasks in them.
+To [run tasks of a subproject in an included composite build, use the `:included-build-name:subproject-name:task-name` syntax](https://docs.gradle.org/current/userguide/composite_builds.html#composite_build_executing_tasks).
+For example, to run the `test` task in subproject `calc` of included composite build `spoofax3.example.root`:
 ```shell script
-./gradlew runTasksInCompositeBuild -PtaskPaths=:stratego.spoofax:cleanTest;:stratego.spoofax:test -PcompositeBuildName=spoofax3.lwb.root
+./gradlew :spoofax3.example.root:calc:test
 ```
 
+So, to explore the available tasks, 1) look at the available composite builds, 2) look at the subprojects of a composite build, 3) run the `tasks` task there.
+This goes as follows:
+1) To get a list of all included composite builds, run:
+```shell script
+./gradlew includedBuilds
+```
+
+2) To get a list of subprojects of an included composite build, use the `:included-build-name:projects` syntax. For example:
+```shell script
+./gradlew :spoofax3.example.root:projects
+```
+
+3) Run the `tasks` task:
+```shell script
+./gradlew :spoofax3.example.root:calc:tasks
+```
+
+This covers exploring and running tasks from the command-line, but IDEs have dedicated GUIs for doing this in a more visual way.
+For example, in IntelliJ, the Gradle tool window shows the entire composite build, subproject, and task hierarchy, making exploration easy.
 
 ## Importing into IntelliJ IDEA
 
@@ -201,6 +219,21 @@ This plugin exposes the `devenv` extension which allows configuration of reposit
 
 ## Troubleshooting
 In general, ensure you're calling `./repo` and `./gradlew` on Linux and MacOS (or `repo.bat` and `gradlew.bat` on Windows) instead of your local Gradle installation. The local one may be too old or too new.
+
+### Cannot debug in IntelliJ
+Debugging in IntelliJ is a bit buggy at the moment. To force debugging, add the following environment variable to your run configuration:
+
+    JAVA_TOOL_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005
+
+Then start the run configuration in debug mode, and wait until the following shows up in the console:
+
+    Listening for transport dt_socket at address: 5005 Attach debugger
+
+Then click the `Attach debugger` text in the console to attach the debugger and start debugging.
+
+If you are debugging tests, make sure that the test results are cleaned before by running `cleanTest`, otherwise Gradle may skip the test task. For example, run the following Gradle tasks as part of the run configuration:
+
+    :spoofax3.lwb.root:spoofax.dynamicloading:cleanTest :spoofax3.lwb.root:spoofax.dynamicloading:test
 
 ### Task 'buildAll' not found in root project 'devenv'
 You have 'configure on demand' enabled, such as `org.gradle.configureondemand=true` in your `~/.gradle/gradle.properties` file. Disable this.

@@ -11,9 +11,10 @@ apply(plugin = "org.metaborg.gradle.config.root-project")
 
 tasks.register("includedBuilds") {
   doLast {
-    println("Included builds:")
+    println("Included builds")
+    println("---------------")
     for (build in gradle.includedBuilds) {
-      println("  :${build.name} @ ${build.projectDir}")
+      println(":${build.name}")
     }
   }
 }
