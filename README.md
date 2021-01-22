@@ -235,6 +235,15 @@ If you are debugging tests, make sure that the test results are cleaned before b
 
     :spoofax3.lwb.root:spoofax.dynamicloading:cleanTest :spoofax3.lwb.root:spoofax.dynamicloading:test
 
+### Spoofax 2 language fails to build with "Previous build failed and no change in the build input has been observed"
+
+If building a Spoofax 2 language fails due to some ephemeral issue, or if building is cancelled (because you cancelled the Gradle build), the following exception may be thrown during the build:
+
+    org.metaborg.core.MetaborgException: Previous build failed and no change in the build input has been observed, not rebuilding. Fix the problem, or clean and rebuild the project to force a rebuild
+
+This is an artifact of the Pluto build system refusing to rebuild if it failed but no changes to the input were detected.
+To force Pluto to rebuild, delete the `target/pluto` directory of the language.
+
 ### Task 'buildAll' not found in root project 'devenv'
 You have 'configure on demand' enabled, such as `org.gradle.configureondemand=true` in your `~/.gradle/gradle.properties` file. Disable this.
 
