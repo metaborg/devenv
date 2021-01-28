@@ -231,6 +231,9 @@ Then start the run configuration in debug mode, and wait until the following sho
 
 Then click the `Attach debugger` text in the console to attach the debugger and start debugging.
 
+Note that this enables debugging for any Gradle task that executes Java in an isolated way, including any (Java/Kotlin) compilation tasks that run in a separate process.
+Make sure to first build normally such that these tasks are no longer executed, then run your debugging configuration.
+
 If you are debugging tests, make sure that the test results are cleaned before by running `cleanTest`, otherwise Gradle may skip the test task. For example, run the following Gradle tasks as part of the run configuration:
 
     :spoofax3.lwb.root:spoofax.dynamicloading:cleanTest :spoofax3.lwb.root:spoofax.dynamicloading:test
