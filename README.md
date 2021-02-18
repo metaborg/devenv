@@ -238,13 +238,24 @@ If you are debugging tests, make sure that the test results are cleaned before b
 
     :spoofax3.lwb.root:spoofax.dynamicloading:cleanTest :spoofax3.lwb.root:spoofax.dynamicloading:test
 
+### Profiling in IntelliJ
+Profiling in IntelliJ can be done similarly to debugging. For example, to profile with YourKit, add the following environment variable to your run configuration:
+
+    JAVA_TOOL_OPTIONS=-agentpath:/Applications/YourKit-Java-Profiler-2020.9.app/Contents/Resources/bin/mac/libyjpagent.dylib=listen=all,sampling,onexit=snapshot
+
+If you are using a different profiler, the `agentpath` needs to point to the corresponding agent of your profiler, and the settings after the agent will need to be tailored towards your profiler.
+In the example above, the YourKit profiler will attach to the program, enable CPU sampling, and create a snapshot when the program ends.
+The snapshot can then be opened and inspected in YourKit.
+
+Similar to debugging, this enables profiling for any Gradle task that executes Java in an isolated way, and tests must be cleaned before profiling to force tests to be executed.
+
 ### Spoofax 2 language fails to build with "Previous build failed and no change in the build input has been observed"
 
 If building a Spoofax 2 language fails due to some ephemeral issue, or if building is cancelled (because you cancelled the Gradle build), the following exception may be thrown during the build:
 
     org.metaborg.core.MetaborgException: Previous build failed and no change in the build input has been observed, not rebuilding. Fix the problem, or clean and rebuild the project to force a rebuild
 
-This is an artifact of the Pluto build system refusing to rebuild if it failed but no changes to the input were detected.
+This is an artefact of the Pluto build system refusing to rebuild if it failed but no changes to the input were detected.
 To force Pluto to rebuild, delete the `target/pluto` directory of the language.
 
 ### Task 'buildAll' not found in root project 'devenv'
