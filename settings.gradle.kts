@@ -36,8 +36,12 @@ configure<mb.gradle.config.devenv.DevenvSettingsExtension> {
   }
 
   // Independent common Java libraries.
-  includeBuildIfRepositoryIncluded("log")
-  includeBuildIfRepositoryIncluded("resource")
+  if(isRepositoryIncluded("log")) {
+    includeBuildWithName("log", "log.root")
+  }
+  if(isRepositoryIncluded("resource")) {
+    includeBuildWithName("resource", "resource.root")
+  }
   if(isRepositoryIncluded("common")) {
     includeBuildWithName("common", "common.root")
   }
