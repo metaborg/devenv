@@ -50,7 +50,7 @@ configure<mb.gradle.config.devenv.DevenvSettingsExtension> {
   if(isRepositoryIncluded("pie")) {
     includeBuildWithName("pie", "pie.root")
     includeBuildWithName("pie/core", "pie.core.root")
-    includeBuildWithName("pie/bench", "pie.bench")
+    //includeBuildWithName("pie/bench", "pie.bench")
   }
 
   // Spoofax 2 Java libraries, languages, and Gradle plugin.
@@ -69,7 +69,7 @@ configure<mb.gradle.config.devenv.DevenvSettingsExtension> {
   if(isRepositoryIncluded("spoofax-pie")) {
     includeBuildWithName("spoofax.pie", "spoofax3.root")
     includeBuildWithName("spoofax.pie/core", "spoofax3.core.root")
-    includeBuildWithName("spoofax.pie/lwb", "spoofax3.lwb.root")
+    //includeBuildWithName("spoofax.pie/lwb", "spoofax3.lwb.root")
     includeBuildWithName("spoofax.pie/example", "spoofax3.example.root")
   }
 
