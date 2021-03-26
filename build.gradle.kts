@@ -80,6 +80,12 @@ tasksWithIncludedBuild("stratego") {
 tasksWithIncludedBuild("spoofax3.example.root") {
   registerDelegateTask("buildSpoofaxExample", it, ":buildAll")
 
+  registerDelegateTask("testMinics", it, ":minics:test")
+  registerDelegateTask("testMinicsSpoofax", it, ":minics.spoofax:test")
+  registerDelegateTask("runMinicsCli", it, ":minics.cli:run")
+  registerDelegateTask("runMinicsEclipse", it, ":minics.eclipse:runEclipse")
+  registerDelegateTask("runMinicsIntelliJ", it, ":minics.intellij:runIde")
+
   registerDelegateTask("testTiger", it, ":tiger:test")
   registerDelegateTask("testTigerSpoofax", it, ":tiger.spoofax:test")
   registerDelegateTask("runTigerCli", it, ":tiger.cli:run")
