@@ -1,9 +1,10 @@
 buildscript {
   repositories {
+    mavenLocal()
     maven("https://artifacts.metaborg.org/content/groups/public/")
   }
   dependencies {
-    classpath("org.metaborg:gradle.config:0.4.4")
+    classpath("org.metaborg:gradle.config:develop-SNAPSHOT")
   }
 }
 apply(plugin = "org.metaborg.gradle.config.devenv-repositories")

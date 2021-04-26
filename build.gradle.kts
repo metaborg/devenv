@@ -86,6 +86,12 @@ tasksWithIncludedBuild("spoofax3.example.root") {
   registerDelegateTask("runMinicsEclipse", it, ":minics.eclipse:runEclipse")
   registerDelegateTask("runMinicsIntelliJ", it, ":minics.intellij:runIde")
 
+  registerDelegateTask("testMicrocs", it, ":microcs:test")
+  registerDelegateTask("testMicrocsSpoofax", it, ":microcs.spoofax:test")
+  registerDelegateTask("runMicrocsCli", it, ":microcs.cli:run")
+  registerDelegateTask("runMicrocsEclipse", it, ":microcs.eclipse:runEclipse")
+  registerDelegateTask("runMicrocsIntelliJ", it, ":microcs.intellij:runIde")
+
   registerDelegateTask("testTiger", it, ":tiger:test")
   registerDelegateTask("testTigerSpoofax", it, ":tiger.spoofax:test")
   registerDelegateTask("runTigerCli", it, ":tiger.cli:run")
