@@ -42,10 +42,13 @@ gradlePipeline(
   buildMainBranch: false,
   buildTag: false,
   buildReleaseTag: false,
-  publish: false,
 
   gradleParallel: false,
   gradleBuildTasks: 'buildAll archiveSpoofax3LwbEclipseInstallations',
+  gradlePublishTasks: 'publishSpoofax3LwbEclipseRepository',
+
+  publishDevelopBranch: true,
+  publishReleaseTag: false,
 
   archive: true,
   archivePattern: 'spoofax.pie/lwb/spoofax.lwb.eclipse.repository/build/dist/Eclipse-*.zip',
