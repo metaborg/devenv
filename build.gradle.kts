@@ -78,7 +78,7 @@ tasksWithIncludedBuild("stratego") {
 }
 
 tasksWithIncludedBuild("spoofax3.example.root") {
-  registerDelegateTask("buildSpoofaxExample", it, ":buildAll")
+  registerDelegateTask("buildSpoofax3Examples", it, ":buildAll")
 
   registerDelegateTask("testTiger", it, ":tiger:test")
   registerDelegateTask("testTigerSpoofax", it, ":tiger.spoofax:test")
@@ -93,10 +93,17 @@ tasksWithIncludedBuild("spoofax3.example.root") {
   registerDelegateTask("runModIntelliJ", it, ":mod.intellij:runIde")
 
   registerDelegateTask("testSdf3", it, ":sdf3:test")
-  registerDelegateTask("testSdf3Spoofax", it, ":sdf3.spoofax:test")
   registerDelegateTask("runSdf3Cli", it, ":sdf3.cli:run")
   registerDelegateTask("runSdf3Eclipse", it, ":sdf3.eclipse:runEclipse")
   registerDelegateTask("runSdf3IntelliJ", it, ":sdf3.intellij:runIde")
+}
+
+tasksWithIncludedBuild("spoofax3.lwb.root") {
+  registerDelegateTask("buildSpoofax3Lwb", it, ":buildAll")
+  registerDelegateTask("runSpoofax3LwbEclipse", it, ":spoofax.lwb.eclipse:runEclipse")
+  registerDelegateTask("buildSpoofax3LwbEclipseInstallation", it, ":spoofax.lwb.eclipse.repository:createEclipseInstallation")
+  registerDelegateTask("buildSpoofax3LwbEclipseInstallationWithJvm", it, ":spoofax.lwb.eclipse.repository:createEclipseInstallationWithJvm")
+  registerDelegateTask("archiveSpoofax3LwbEclipseInstallations", it, ":spoofax.lwb.eclipse.repository:archiveEclipseInstallations", ":spoofax.lwb.eclipse.repository:archiveEclipseInstallationsWithJvm")
 }
 
 fun Project.tasksWithIncludedBuild(name: String, fn: TaskContainer.(IncludedBuild) -> Unit) {
