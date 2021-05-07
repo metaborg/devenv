@@ -45,6 +45,10 @@ gradlePipeline(
   publish: false,
 
   gradleParallel: false,
+  gradleBuildTasks: 'buildAll archiveSpoofax3LwbEclipseInstallations',
+
+  archive: true,
+  archivePattern: 'spoofax.pie/lwb/spoofax.lwb.eclipse.repository/build/dist/Eclipse-*.zip',
 
   slack: true,
   slackChannel: "#spoofax3-dev",
