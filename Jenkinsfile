@@ -39,13 +39,13 @@ gradlePipeline(
 
   preBuildCommand: './repo update',
 
+  gradleParallel: false,
+  gradleBuildTasks: 'buildAll archiveSpoofax3LwbEclipseInstallations',
+  gradlePublishTasks: 'publishSpoofax3Lwb',
+
   buildMainBranch: false,
   buildTag: false,
   buildReleaseTag: false,
-
-  gradleParallel: false,
-  gradleBuildTasks: 'buildAll archiveSpoofax3LwbEclipseInstallations',
-  gradlePublishTasks: 'publishSpoofax3LwbEclipseRepository',
 
   publishDevelopBranch: true,
   publishReleaseTag: false,
