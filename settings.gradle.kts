@@ -62,7 +62,7 @@ configure<mb.gradle.config.devenv.DevenvSettingsExtension> {
 
   // PIE DSL (include after Spoofax 2, since it uses the Spoofax 2 Gradle plugin)
   if(isRepositoryIncluded("pie")) {
-    includeBuildWithName("pie/lang", "pie.lang.root")
+    //includeBuildWithName("pie/lang", "pie.lang.root")
   }
 
   // Spoofax 3 Java libraries, languages, and Gradle plugins.
