@@ -3,6 +3,9 @@
 This repository contains a Gradle script to manage a development environment for MetaBorg projects.
 The script supports cloning and updating Git repositories that contain the source code for MetaBorg projects, and for building (compiling and testing) these projects.
 
+## Warnings
+
+> **DO NOT RUN `git clean` IN THIS REPOSITORY, IT WILL DELETE ALL FILES IN ALL SUB-REPOSITORIES.**
 
 ## Requirements
 
