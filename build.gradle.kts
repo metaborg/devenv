@@ -4,7 +4,7 @@ buildscript {
     maven("https://artifacts.metaborg.org/content/groups/public/")
   }
   dependencies {
-    classpath("org.metaborg:gradle.config:0.4.4")
+    classpath("org.metaborg:gradle.config:0.4.6")
   }
 }
 apply(plugin = "org.metaborg.gradle.config.root-project")
