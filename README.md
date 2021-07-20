@@ -12,11 +12,9 @@ The script supports cloning and updating Git repositories that contain the sourc
 ### JDK
 
 To run Gradle and build this repository, a Java Development Kit (JDK) is needed.
-JDK versions between 8 and 11 are supported. Higher versions may work, but have not been tested yet.
+JDK version 11 is supported. Higher versions may work, but have not been tested yet.
 
 We recommend to [install JDK11 from AdoptOpenJDK](https://adoptopenjdk.net/?variant=openjdk11&jvmVariant=hotspot), or to use your favourite package manager (e.g., `brew install adoptopenjdk11` on macOS, `choco install adoptopenjdk11` on Windows).
-
-If you require JDK8 for compatibility reasons, [install JDK8 from AdoptOpenJDK](https://adoptopenjdk.net/?variant=openjdk8&jvmVariant=hotspot), or to use your favourite package manager (e.g., `brew install adoptopenjdk8` on macOS, `choco install adoptopenjdk8` on Windows).
 
 ### Gradle
 
