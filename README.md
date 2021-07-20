@@ -36,6 +36,13 @@ To update repositories to their latest version, and to clone new repositories, r
 ```
 
 On Windows, use `repo.bat` instead.
+By default, repositories will be cloned via SSH.
+If you would rather clone over HTTPS, pass the `--transport https` option:
+
+```shell script
+./repo update --transport https
+```
+
 For a list of other operations possible on repositories, run:
 
 ```shell script
@@ -220,6 +227,10 @@ This plugin exposes the `devenv` extension which allows configuration of reposit
 
 ## Troubleshooting
 In general, ensure you're calling `./repo` and `./gradlew` on Linux and MacOS (or `repo.bat` and `gradlew.bat` on Windows) instead of your local Gradle installation. The local one may be too old or too new.
+
+### Many errors about unresolved classes in IntelliJ
+
+If after importing there are many errors in files about classes not existing, re-import all the projects by pressing the `Reload All Gradle Projects` button in the Gradle tool window.
 
 ### Cannot debug in IntelliJ
 Debugging in IntelliJ is a bit buggy at the moment. To force debugging, add the following environment variable to your run configuration:
