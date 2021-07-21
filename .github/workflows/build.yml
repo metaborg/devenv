@@ -46,3 +46,8 @@ jobs:
         with:
           gradle-version: ${{ matrix.gradle }}
           arguments: buildAll --parallel --stacktrace
+  print_jvm_crash_logs:
+    if: always()
+    needs: build
+    steps:
+      - run: cat hs_err_pid*.log
