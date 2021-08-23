@@ -41,7 +41,7 @@ gradlePipeline(
 
   gradleParallel: false,
   gradleBuildTasks: 'buildAll archiveSpoofax3LwbEclipseInstallations',
-  gradlePublishTasks: 'publishSpoofax3Lwb',
+  gradlePublishTasks: 'publishAll publishSpoofax3Lwb',
 
   buildMainBranch: false,
   buildTag: false,
