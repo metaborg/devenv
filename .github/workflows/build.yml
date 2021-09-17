@@ -21,7 +21,7 @@ jobs:
         id: repo-update
         with:
           gradle-version: ${{ matrix.gradle }}
-          arguments: -c repo.settings.gradle.kts update --transport https
+          arguments: -c repo.settings.gradle.kts update --transport https  -Dorg.gradle.jvmargs="-Xms6G -Xmx6G -Xss8M"
       - uses: actions/cache@v2
         id: cache-mavenize
         with:
