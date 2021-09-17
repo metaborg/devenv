@@ -21,7 +21,7 @@ jobs:
         id: repo-update
         with:
           gradle-version: ${{ matrix.gradle }}
-          arguments: -c repo.settings.gradle.kts update --transport https  -Dorg.gradle.jvmargs="-Xms6G -Xmx6G -Xss8M"
+          arguments: -c repo.settings.gradle.kts update --transport https  -Dorg.gradle.jvmargs="-Xms4G -Xmx4G -Xss8M"
       - uses: actions/cache@v2
         id: cache-mavenize
         with:
@@ -45,7 +45,7 @@ jobs:
         id: build-all
         with:
           gradle-version: ${{ matrix.gradle }}
-          arguments: buildAll --parallel --stacktrace -Dorg.gradle.jvmargs="-Xms6G -Xmx6G -Xss8M"
+          arguments: buildAll --parallel --stacktrace -Dorg.gradle.jvmargs="-Xms4G -Xmx4G -Xss8M"
       - id: print-jvm-crash-logs
         if: ${{ failure() }}
         run: cat hs_err_pid*.log
