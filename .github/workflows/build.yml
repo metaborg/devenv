@@ -5,9 +5,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-20.04, windows-2019, macos-10.15 ]
+        os: [ ubuntu-20.04, windows-2019, macos-10.15, macos-11 ]
         java: [ 11 ]
-        gradle: [ 5.6.4, 6.8.2 ]
+        gradle: [ 5.6.4, 6.9.1 ]
         experimental: [ false ]
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental }}
@@ -21,7 +21,7 @@ jobs:
         id: repo-update
         with:
           gradle-version: ${{ matrix.gradle }}
-          arguments: -c repo.settings.gradle.kts update --transport https "-Dorg.gradle.jvmargs=-Xms4G -Xmx4G -Xss8M"
+          arguments: -c repo.settings.gradle.kts update --transport https "-Dorg.gradle.jvmargs=-Xms6G -Xmx6G -Xss8M"
       - uses: actions/cache@v2
         id: cache-mavenize
         with:
@@ -45,7 +45,7 @@ jobs:
         id: build-all
         with:
           gradle-version: ${{ matrix.gradle }}
-          arguments: buildAll --parallel --stacktrace "-Dorg.gradle.jvmargs=-Xms4G -Xmx4G -Xss8M"
+          arguments: buildAll --parallel --stacktrace "-Dorg.gradle.jvmargs=-Xms6G -Xmx6G -Xss8M"
       - id: print-jvm-crash-logs
         if: ${{ failure() }}
-        run: cat hs_err_pid*.log
+        run: cat hs_err_pid*.log || cat **/hs_err_pid*.log
