@@ -14,18 +14,27 @@ jobs:
     steps:
       # Increases page file size on Windows, fixing JVM crashes such as "The paging file is too small for this operation
       # to complete"
-      - uses: al-cheb/configure-pagefile-action@v1.2
+      - id: increase-page-file-size-on-windows
+        uses: al-cheb/configure-pagefile-action@v1.2
         if: runner.os == 'Windows'
+      # Install coreutils via brew on macOS, needed to run sdf2table.
+      - id: install-coreutils-on-macos
+        if: runner.os == 'macOS'
+        run: brew install coreutils
+      # Checkout this Git repository.
       - uses: actions/checkout@v2
+      # Setup Java, adopt variant, according to the Java version from the matrix.
       - uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: ${{ matrix.java }}
-      - uses: eskatos/gradle-command-action@v1
-        id: repo-update
+      # Run Gradle (version from the matrix) with file repo.settings.gradle.kts to check out sub-repos.
+      - id: repo-update
+        uses: eskatos/gradle-command-action@v1
         with:
           gradle-version: ${{ matrix.gradle }}
           arguments: -c repo.settings.gradle.kts update --transport https "-Dorg.gradle.jvmargs=-Xms5G -Xmx5G -Xss8M"
+      # Set up caching for the Coronium Gradle plugin
       - uses: actions/cache@v2
         id: cache-mavenize
         with:
@@ -36,8 +45,9 @@ jobs:
           key: mavenize-${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}
           restore-keys: |
             mavenize-${{ runner.os }}-
-      - uses: actions/cache@v2
-        id: cache-gradle
+      # Set up caching for Gradle. TODO: is this still needed? Gradle action seems to do its own caching?
+      - id: cache-gradle
+        uses: actions/cache@v2
         with:
           path: |
             ~/.gradle/caches
@@ -45,11 +55,13 @@ jobs:
           key: gradle-${{ runner.os }}-${{ matrix.gradle }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             gradle-${{ runner.os }}-
+      # Run the build (with Gradle version from the matrix).
       - uses: eskatos/gradle-command-action@v1
         id: build-all
         with:
           gradle-version: ${{ matrix.gradle }}
           arguments: buildAll --parallel --stacktrace "-Dorg.gradle.jvmargs=-Xms5G -Xmx5G -Xss8M"
+      # Print JVM crash/replay logs if the previous step failed.
       - id: print-jvm-crash-logs
         if: ${{ failure() }}
         run: cat hs_err_pid*.log; cat **/hs_err_pid*.log; cat replay_pid*.log; cat **/replay_pid*.log; true
