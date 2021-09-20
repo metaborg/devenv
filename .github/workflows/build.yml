@@ -7,7 +7,7 @@ jobs:
       matrix:
         os: [ ubuntu-20.04, windows-2019, macos-10.15, macos-11 ]
         java: [ 11 ]
-        gradle: [ 5.6.4, 6.9.1 ]
+        gradle: [ 6.9.1 ]
         experimental: [ false ]
     runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.experimental }}
@@ -21,10 +21,16 @@ jobs:
       - id: install-coreutils-on-macos
         if: runner.os == 'macOS'
         run: brew install coreutils
+      # Setup docker on macOS, needed to run sdf2table.
+      - id: setup-docker-on-macos
+        uses: docker-practice/actions-setup-docker@master
+        if: runner.os == 'macOS'
       # Checkout this Git repository.
-      - uses: actions/checkout@v2
+      - id: checkout
+        uses: actions/checkout@v2
       # Setup Java, adopt variant, according to the Java version from the matrix.
-      - uses: actions/setup-java@v2
+      - id: setup-java
+        uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
           java-version: ${{ matrix.java }}
@@ -35,8 +41,8 @@ jobs:
           gradle-version: ${{ matrix.gradle }}
           arguments: -c repo.settings.gradle.kts update --transport https "-Dorg.gradle.jvmargs=-Xms5G -Xmx5G -Xss8M"
       # Set up caching for the Coronium Gradle plugin
-      - uses: actions/cache@v2
-        id: cache-mavenize
+      - id: cache-mavenize
+        uses: actions/cache@v2
         with:
           path: |
             ~/.mavenize/eclipse_archive_cache/*.dmg
@@ -56,8 +62,8 @@ jobs:
           restore-keys: |
             gradle-${{ runner.os }}-
       # Run the build (with Gradle version from the matrix).
-      - uses: eskatos/gradle-command-action@v1
-        id: build-all
+      - id: build
+        uses: eskatos/gradle-command-action@v1
         with:
           gradle-version: ${{ matrix.gradle }}
           arguments: buildAll --parallel --stacktrace "-Dorg.gradle.jvmargs=-Xms5G -Xmx5G -Xss8M"
