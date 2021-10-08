@@ -25,7 +25,7 @@ However, to build on the command-line, Gradle does not need to be installed, as 
 If you plan to import this project into IntelliJ, you do need to install Gradle.
 On macOS/Linux, we recommend installing Gradle 6.9.1 using the [SDKMAN!](https://sdkman.io/) package manager with `sdk install gradle 6.9.1`.
 On Windows, we recommend [Chocolatey](https://chocolatey.org/) with `choco install gradle --version=6.9.1`.
-In case you use Gradle 6.8 in IntelliJ, use the `gradle` command instead of `./gradlew` to ensure that command-line builds use the same Gradle version and cache.
+In case you use Gradle in IntelliJ, use the `gradle` command instead of `./gradlew` to ensure that command-line builds use the same Gradle version and cache.
 
 ## Updating repositories
 
