@@ -6,6 +6,7 @@
 *.jar
 hs_err_pid*
 *.hprof
+*.hprof.idom
 
 # devenv
 # Ignore all subdirectories, because they are nested Git repositories.
