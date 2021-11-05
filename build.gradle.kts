@@ -100,7 +100,10 @@ tasksWithIncludedBuild("spoofax3.example.root") {
 
 tasksWithIncludedBuild("spoofax3.lwb.root") {
   registerDelegateTask("buildSpoofax3Lwb", it, ":buildAll")
-  registerDelegateTask("runSpoofax3LwbEclipse", it, ":spoofax.lwb.eclipse:runEclipse")
+}
+
+tasksWithIncludedBuild("spoofax3.lwb.distrib.root") {
+  registerDelegateTask("runSpoofax3LwbEclipse", it, ":spoofax.lwb.eclipse.feature:runEclipse")
   registerDelegateTask("buildSpoofax3LwbEclipseInstallation", it, ":spoofax.lwb.eclipse.repository:createEclipseInstallation")
   registerDelegateTask("buildSpoofax3LwbEclipseInstallationWithJvm", it, ":spoofax.lwb.eclipse.repository:createEclipseInstallationWithJvm")
 
