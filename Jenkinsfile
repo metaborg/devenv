@@ -40,6 +40,7 @@ gradlePipeline(
   preBuildCommand: './repo update',
 
   gradleParallel: false,
+  gradleMaxWorkers: '1',
   gradleBuildTasks: 'buildAll archiveSpoofax3LwbEclipseInstallations',
   gradlePublishTasks: 'publishAll publishSpoofax3Lwb',
 
