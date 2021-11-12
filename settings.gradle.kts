@@ -69,7 +69,6 @@ configure<mb.gradle.config.devenv.DevenvSettingsExtension> {
   if(isRepositoryIncluded("spoofax-pie")) {
     includeBuildWithName("spoofax.pie", "spoofax3.root")
     includeBuildWithName("spoofax.pie/core", "spoofax3.core.root")
-    includeBuildWithName("spoofax.pie/metalib", "spoofax3.metalib.root")
     includeBuildWithName("spoofax.pie/lwb", "spoofax3.lwb.root")
     includeBuildWithName("spoofax.pie/lwb.distrib", "spoofax3.lwb.distrib.root")
     includeBuildWithName("spoofax.pie/example", "spoofax3.example.root")
