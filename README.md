@@ -1,3 +1,6 @@
+[![GitHub actions](https://img.shields.io/github/workflow/status/metaborg/devenv/Build?label=GitHub%20actions)](https://github.com/metaborg/devenv/actions/workflows/build.yml)
+[![Jenkins](https://img.shields.io/jenkins/build/https/buildfarm.metaborg.org/job/metaborg/job/devenv/job/develop?label=Jenkins)](https://buildfarm.metaborg.org/job/metaborg/job/devenv/job/develop/lastBuild)
+
 # MetaBorg development environment
 
 This repository contains a Gradle script to manage a development environment for MetaBorg projects.
@@ -169,6 +172,8 @@ Publishing the artifacts of a repository is done via that repository.
 The non-master branches of devenv are [automatically built with our build farm](https://buildfarm.metaborg.org/view/Spoofax-PIE/job/metaborg/job/devenv/).
 Whenever a repository that devenv includes/updates has changed, the build for devenv is triggered automatically.
 
+This repository can also be built on-demand on GitHub actions by [manually running the build workflow](https://github.com/metaborg/devenv/actions/workflows/build.yml).
+This is useful to test on different operating systems.
 
 ## Working with Spoofax 2 projects
 
