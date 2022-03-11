@@ -43,6 +43,7 @@ gradlePipeline(
   gradleMaxWorkers: '1',
   gradleBuildTasks: 'buildAll archiveSpoofax3LwbEclipseInstallations',
   gradlePublishTasks: 'publishAll publishSpoofax3Lwb',
+  gradleArgs: '--scan',
 
   buildMainBranch: false,
   buildTag: false,
