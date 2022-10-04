@@ -114,7 +114,7 @@ case "$( uname )" in                #(
   NONSTOP* )        nonstop=true ;;
 esac
 
-CLASSPATH=$APP_HOME/.gradlew/wrapper/gradle-wrapper.jar
+CLASSPATH=$APP_HOME/gradle/wrapper/gradle-wrapper.jar
 
 
 # Determine the Java command to use to start the JVM.
@@ -204,12 +204,6 @@ set -- \
         -classpath "$CLASSPATH" \
         org.gradle.wrapper.GradleWrapperMain \
         "$@"
-
-# Stop when "xargs" is not available.
-if ! command -v xargs >/dev/null 2>&1
-then
-    die "xargs is not available"
-fi
 
 # Use "xargs" to parse quoted args.
 #
