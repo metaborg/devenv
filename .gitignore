@@ -13,15 +13,16 @@ hs_err_pid*
 /*/
 # Unignore files in subdirectories, so that they do not show up as ignored in IntelliJ. Git will not track files in nested Git repositories.
 !/*/**
-# Unignore gradle wrapper subdirectory.
-!/.gradlew
+# Unignore gradle configuration directory.
+!/gradle
+!gradle-wrapper.jar
+!gradle-wrapper.properties
 # Unignore GitHub actions workflow subdirectory.
 !/.github
 
 # Gradle
 /.gradle
 /build
-!.gradlew/wrapper/gradle-wrapper.jar
 
 # IntelliJ
 /.idea
