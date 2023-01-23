@@ -86,6 +86,8 @@ tasksWithIncludedBuild("spoofax3.example.root") {
   registerDelegateTask("runTigerEclipse", it, ":tiger.eclipse:runEclipse")
   registerDelegateTask("runTigerIntelliJ", it, ":tiger.intellij:runIde")
 
+  registerDelegateTask("runTiger3Eclipse", it, ":tiger.spoofax3.eclipse:runEclipse")
+
   registerDelegateTask("testMod", it, ":mod:test")
   registerDelegateTask("testModSpoofax", it, ":mod.spoofax:test")
   registerDelegateTask("runModCli", it, ":mod.cli:run")
