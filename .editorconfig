@@ -65,17 +65,17 @@ indent_size = 2
 tab_width = 2
 ij_continuation_indent_size = 2
 
-[{*.gant, *.groovy, *.gradle, *.gdsl, *.gy, Jenkinsfile}]
+[{*.gant,*.groovy,*.gradle,*.gdsl,*.gy,Jenkinsfile}]
 indent_size = 2
 tab_width = 2
 ij_continuation_indent_size = 2
 
-[{*.jhm, *.xslt, *.xul, *.tagx, *.rng, *.xsl, *.xsd, *.jspx, *.ant, *.tld, *.fxml, *.wsdl, *.jrxml, *.xml, *.jnlp, *.pom}]
+[{*.jhm,*.xslt,*.xul,*.tagx,*.rng,*.xsl,*.xsd,*.jspx,*.ant,*.tld,*.fxml,*.wsdl,*.jrxml,*.xml,*.jnlp,*.pom}]
 indent_size = 2
 tab_width = 2
 ij_continuation_indent_size = 2
 
-[{*.kt, *.kts}]
+[{*.kt,*.kts}]
 indent_size = 2
 tab_width = 2
 ij_continuation_indent_size = 2
@@ -83,12 +83,12 @@ ij_continuation_indent_size = 2
 ij_kotlin_name_count_to_use_star_import = 999
 ij_kotlin_name_count_to_use_star_import_for_members = 999
 
-[{*.yml, *.yaml}]
+[{*.yml,*.yaml}]
 indent_size = 2
 tab_width = 2
 ij_continuation_indent_size = 2
 
-[{*.md, *.adoc}]
+[{*.md,*.adoc}]
 indent_size = 2
 tab_width = 2
 ij_continuation_indent_size = 2
