@@ -18,56 +18,37 @@ crst=`tput sgr0`                   # Reset color
 # READ command-line options                                                    #
 ################################################################################
 
-# Parse options
-GETOPT=/usr/local/opt/gnu-getopt/bin/getopt
-
-! $GETOPT --test > /dev/null
-if [[ ${PIPESTATUS[0]} -ne 4 ]]; then
-    echo 'I’m sorry, GNU getopt is not available in this environment.'
-    echo 'Install it using `brew install gnu-getopt` '
-    exit 1
-fi
-
-# Short options: "-X")
-OPTIONS=X
-# Long options: "--before DATETIME", "--dry-run"
-LONGOPTS=before:,dry-run
-
-! PARSED=$($GETOPT --options=$OPTIONS --longoptions=$LONGOPTS --name "$0" -- "$@")
-if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
-    # Wrong arguments, or could not be parsed.
-    exit 2
-fi
-eval set -- "$PARSED"
-
 # Handle the option arguments
 before=""                                       # Before date
 dry_run=0                                       # Whether to do a dry-run (1) or not (0)
 
-while true; do
-    case "$1" in
-        --before)
+usage() {
+    echo ""
+    echo "Usage:"
+    echo "  -b DATETIME             Checkout all commits before date/time"
+    echo "  -X                      Do a dry-run"
+    exit 3
+}
+
+while getopts ":b:X" o; do
+    case "${o}" in
+        b)
             before="$2"
-            shift 2
             ;;
-        -X|--dry-run)
+        X)
             dry_run=1
-            shift 1
-            ;;
-        --)
-            shift
-            break
             ;;
         *)
             echo "${cerr}Programming error${crst}"
-            echo ""
-            echo "Usage:"
-            echo "  --before DATETIME       Checkout all commits before date/time"
-            echo "  -X, --dry-run           Do a dry-run"
-            exit 3
+            usage
             ;;
     esac
 done
+shift $((OPTIND-1))
+
+if [ -z "${before}" ]; then
+    usage
+fi
 
 # Get the script directory
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
@@ -84,6 +65,7 @@ if [[ "$dry_run" -eq 0 ]]; then
     fi
 fi
 
+echo "Resetting all repositories to commit before $before..."
 for repo in ${repos}; do
     (
         cd "$repo/.."
@@ -100,3 +82,5 @@ done
 if [[ "$dry_run" -ne 0 ]]; then
     echo "${cwarn}No changes were made because of dry-run.${crst}"
 fi
+
+echo "Done!"
