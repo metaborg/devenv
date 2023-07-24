@@ -72,7 +72,7 @@ repos=$(find . -type d -name .git -prune -print0 | sort -z | xargs -0)
 
 for repo in ${repos}; do
     (
-        cd "$repo"
+        cd "$repo/.."
         echo "Repo: ${repo}"
         branch=$(git rev-parse --abbrev-ref HEAD)
         commit=$(git rev-list -n 1 --first-parent --before="$before" "$branch")
