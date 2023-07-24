@@ -68,7 +68,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 ################################################################################
 
-repos=$(find . -type d -name .git -prune -print0 | sort -z | xargs -0)
+repos=$(find . -type d -path '**/*/.git' -prune -print0 | sort -z | xargs -0)
 
 for repo in ${repos}; do
     (
@@ -76,8 +76,8 @@ for repo in ${repos}; do
         echo "Repo: ${repo}"
         branch=$(git rev-parse --abbrev-ref HEAD)
         commit=$(git rev-list -n 1 --first-parent --before="$before" "$branch")
-        echo "Branch: $branch"
-        echo "Commit: $commit"
+        echo "  Branch: $branch"
+        echo "  Commit: $commit"
         git reset --hard "$commit"
     )
 done
