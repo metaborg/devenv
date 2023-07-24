@@ -28,10 +28,10 @@ if [[ ${PIPESTATUS[0]} -ne 4 ]]; then
     exit 1
 fi
 
-# Short options: (none))
-OPTIONS=
-# Long options: "--before DATETIME"
-LONGOPTS=before:
+# Short options: "-X")
+OPTIONS=X
+# Long options: "--before DATETIME", "--dry-run"
+LONGOPTS=before:,dry-run
 
 ! PARSED=$($GETOPT --options=$OPTIONS --longoptions=$LONGOPTS --name "$0" -- "$@")
 if [[ ${PIPESTATUS[0]} -ne 0 ]]; then
@@ -42,12 +42,17 @@ eval set -- "$PARSED"
 
 # Handle the option arguments
 before=""                                       # Before date
+dry_run=0                                       # Whether to do a dry-run (1) or not (0)
 
 while true; do
     case "$1" in
         --before)
             before="$2"
             shift 2
+            ;;
+        -X|--dry-run)
+            dry_run=1
+            shift 1
             ;;
         --)
             shift
@@ -58,6 +63,7 @@ while true; do
             echo ""
             echo "Usage:"
             echo "  --before DATETIME       Checkout all commits before date/time"
+            echo "  -X, --dry-run           Do a dry-run"
             exit 3
             ;;
     esac
@@ -70,14 +76,27 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 repos=$(find . -type d -path '**/*/.git' -prune -print0 | sort -z | xargs -0)
 
+echo "This will HARD reset all repositories, you will LOSE ALL CHANGES."
+if [[ "$dry_run" -eq 0 ]]; then
+    read -r -p "Are you sure? [y/N] " response
+    if ! [[ "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+        dry_run=1
+    fi
+fi
+
 for repo in ${repos}; do
     (
         cd "$repo/.."
-        echo "Repo: ${repo}"
+        echo "${repo}"
         branch=$(git rev-parse --abbrev-ref HEAD)
         commit=$(git rev-list -n 1 --first-parent --before="$before" "$branch")
-        echo "  Branch: $branch"
-        echo "  Commit: $commit"
-        git reset --hard "$commit"
+        echo "  $branch @ $commit"
+        if [[ "$dry_run" -eq 0 ]]; then
+            git reset --hard "$commit" --quiet
+        fi
     )
 done
+
+if [[ "$dry_run" -ne 0 ]]; then
+    echo "${cwarn}No changes were made because of dry-run.${crst}"
+fi
