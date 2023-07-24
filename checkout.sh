@@ -78,6 +78,6 @@ for repo in ${repos}; do
         commit=$(git rev-list -n 1 --first-parent --before="$before" "$branch")
         echo "Branch: $branch"
         echo "Commit: $commit"
-        git reset --hard "$(commit)"
+        git reset --hard "$commit"
     )
 done
