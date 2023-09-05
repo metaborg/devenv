@@ -7,6 +7,10 @@ pluginManagement {
   }
 }
 
+plugins {
+  id("com.gradle.enterprise") version("3.14.1")
+}
+
 if(org.gradle.util.VersionNumber.parse(gradle.gradleVersion).major < 6) {
   enableFeaturePreview("GRADLE_METADATA")
 }
@@ -76,4 +80,15 @@ configure<mb.gradle.config.devenv.DevenvSettingsExtension> {
 
   // Jenkins CI
   includeBuildIfRepositoryIncluded("jenkins.pipeline")
+}
+
+gradleEnterprise {
+  buildScan {
+    if (!System.getenv("CI").isNullOrEmpty()) {
+      termsOfServiceUrl = "https://gradle.com/terms-of-service"
+      termsOfServiceAgree = "yes"
+      publishAlways()
+      tag("CI")
+    }
+  }
 }
