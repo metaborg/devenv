@@ -70,9 +70,10 @@ for repo in ${repos}; do
     (
         cd "$repo/.."
         echo "${repo}"
+        remotebranch=$(git rev-parse --abbrev-ref --symbolic-full-name @\{u\})
         branch=$(git rev-parse --abbrev-ref HEAD)
-        commit=$(git rev-list -n 1 --first-parent --before="$before" "$branch")
-        echo "  $branch @ $commit"
+        commit=$(git rev-list -n 1 --first-parent --before="$before" "$remotebranch")
+        echo "  $remotebranch @ $commit"
         if [[ "$dry_run" -eq 0 ]]; then
             git reset --hard "$commit" --quiet
         fi
