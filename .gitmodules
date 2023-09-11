@@ -1,0 +1,80 @@
+[submodule "gradle.config"]
+	path = gradle.config
+	url = https://github.com/metaborg/gradle.config.git
+	branch = develop
+[submodule "gitonium"]
+	path = gitonium
+	url = https://github.com/metaborg/gitonium.git
+	branch = develop
+[submodule "coronium"]
+	path = coronium
+	url = https://github.com/metaborg/coronium.git
+	branch = develop
+[submodule "spoofax.gradle"]
+	path = spoofax.gradle
+	url = https://github.com/metaborg/spoofax.gradle.git
+	branch = develop
+[submodule "mb.exec"]
+	path = mb.exec
+	url = https://github.com/metaborg/mb-exec.git
+	branch = spoofax3
+[submodule "mb.rep"]
+	path = mb.rep
+	url = https://github.com/metaborg/mb-rep.git
+	branch = spoofax3
+[submodule "jsglr"]
+	path = jsglr
+	url = https://github.com/metaborg/jsglr.git
+	branch = spoofax3
+[submodule "sdf"]
+	path = sdf
+	url = https://github.com/metaborg/sdf.git
+	branch = spoofax3
+[submodule "stratego"]
+	path = stratego
+	url = https://github.com/metaborg/stratego.git
+	branch = spoofax3
+[submodule "strategoxt"]
+	path = strategoxt
+	url = https://github.com/metaborg/strategoxt.git
+	branch = spoofax3
+[submodule "esv"]
+	path = esv
+	url = https://github.com/metaborg/esv.git
+	branch = spoofax3
+[submodule "nabl"]
+	path = nabl
+	url = https://github.com/metaborg/nabl.git
+	branch = spoofax3
+[submodule "spoofax2"]
+	path = spoofax2
+	url = https://github.com/metaborg/spoofax.git
+	branch = spoofax3
+[submodule "spt"]
+	path = spt
+	url = https://github.com/metaborg/spt.git
+	branch = spoofax3
+[submodule "releng"]
+	path = releng
+	url = https://github.com/metaborg/spoofax-deploy.git
+	branch = spoofax3
+[submodule "log"]
+	path = log
+	url = https://github.com/metaborg/log.git
+	branch = develop
+[submodule "resource"]
+	path = resource
+	url = https://github.com/metaborg/resource.git
+	branch = develop
+[submodule "common"]
+	path = common
+	url = https://github.com/metaborg/common.git
+	branch = develop
+[submodule "pie"]
+	path = pie
+	url = https://github.com/metaborg/pie.git
+	branch = develop
+[submodule "spoofax.pie"]
+	path = spoofax.pie
+	url = https://github.com/metaborg/spoofax-pie.git
+	branch = develop

@@ -1,39 +1,61 @@
-# macOS
-*.DS_Store
+# Misc
+.cache
+.DS_Store
 
 # Java
 *.class
+*.log
 *.jar
-hs_err_pid*
+*.war
+*.nar
+*.ear
 *.hprof
 *.hprof.idom
+hs_err_pid*
 
-# devenv
-# Ignore all subdirectories, because they are nested Git repositories.
-/*/
-# Unignore files in subdirectories, so that they do not show up as ignored in IntelliJ. Git will not track files in nested Git repositories.
-!/*/**
+# Maven
+target/
+
 # Unignore gradle configuration directory.
 !/gradle
 !gradle-wrapper.jar
 !gradle-wrapper.properties
-# Unignore GitHub actions workflow subdirectory.
-!/.github
 
 # Gradle
-/.gradle
-/build
+.gradle
+gradle-app.setting
+!gradle-wrapper.jar
+.gradletasknamecache
 
-# IntelliJ
-/.idea
-/out
+# Intellij
+.idea/*
+!.idea/icon.svg
+!.idea/icon_dark.svg
+!.idea/icon.png
+!.idea/icon_dark.png
+!.idea/icon.ai
+!.idea/icon_dark.ai
+*.iws
+out/
+*.iml
+*.ipr
 
 # Eclipse
-/.project
-/.settings
-/.classpath
-/.factorypath
-/bin
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
+.factorypath
+.recommenders/
+.apt_generated/
+.apt_generated_test/
 
 # Sublime Text
 /*.sublime-workspace
