@@ -18,6 +18,7 @@ if(org.gradle.util.VersionNumber.parse(gradle.gradleVersion).major < 6) {
 // Apply devenv-settings plugin. Settings plugins must still be put on the classpath via a buildscript block.
 buildscript {
   repositories {
+    mavenLocal()
     maven("https://artifacts.metaborg.org/content/groups/public/")
   }
   dependencies {
