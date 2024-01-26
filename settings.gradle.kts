@@ -36,7 +36,7 @@ configure<mb.gradle.config.devenv.DevenvSettingsExtension> {
   if(isRepositoryIncluded("coronium")) {
     includeBuildWithName("coronium", "coronium.root")
     includeBuildWithName("coronium/plugin", "coronium")
-    includeBuildWithName("coronium/example", "coronium.example")
+    // includeBuildWithName("coronium/example", "coronium.example")
   }
 
   // Independent common Java libraries.
@@ -74,8 +74,8 @@ configure<mb.gradle.config.devenv.DevenvSettingsExtension> {
     includeBuildWithName("spoofax.pie", "spoofax3.root")
     includeBuildWithName("spoofax.pie/core", "spoofax3.core.root")
     includeBuildWithName("spoofax.pie/lwb", "spoofax3.lwb.root")
-    includeBuildWithName("spoofax.pie/lwb.distrib", "spoofax3.lwb.distrib.root")
-    includeBuildWithName("spoofax.pie/example", "spoofax3.example.root")
+    // includeBuildWithName("spoofax.pie/lwb.distrib", "spoofax3.lwb.distrib.root")
+    // includeBuildWithName("spoofax.pie/example", "spoofax3.example.root")
   }
 
   // Jenkins CI
