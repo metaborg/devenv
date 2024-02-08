@@ -2,25 +2,21 @@
 [![Jenkins](https://img.shields.io/jenkins/build/https/buildfarm.metaborg.org/job/metaborg/job/devenv/job/develop?label=Jenkins)](https://buildfarm.metaborg.org/job/metaborg/job/devenv/job/develop/lastBuild)
 
 # MetaBorg development environment
-
 This repository contains a Gradle script to manage a development environment for MetaBorg projects.
 The script supports cloning and updating Git repositories that contain the source code for MetaBorg projects, and for building (compiling and testing) these projects.
 
-## Warnings
-
-> **DO NOT RUN `git clean` IN THIS REPOSITORY, IT WILL DELETE ALL FILES IN ALL SUB-REPOSITORIES.**
 
 ## Requirements
+This project requires a JDK and Gradle.
 
 ### JDK
-
 To run Gradle and build this repository, a Java Development Kit (JDK) is needed.
 JDK version 11 is supported. Higher versions may work, but have not been tested yet.
 
 We recommend to [install JDK11 from AdoptOpenJDK](https://adoptopenjdk.net/?variant=openjdk11&jvmVariant=hotspot), or to use your favourite package manager (e.g., `brew install adoptopenjdk11` on macOS, `choco install adoptopenjdk11` on Windows).
 
-### Gradle
 
+### Gradle
 Gradle is the build system we use to build devenv.
 We support Gradle versions 6.8 - 6.9.1.
 However, to build on the command-line, Gradle does not need to be installed, as this repository includes a Gradle wrapper script (`gradlew`/`gradlew.bat`) which automatically downloads and runs Gradle 6.9.1.
@@ -30,26 +26,35 @@ On macOS/Linux, we recommend installing Gradle 6.9.1 using the [SDKMAN!](https:/
 On Windows, we recommend [Chocolatey](https://chocolatey.org/) with `choco install gradle --version=6.9.1`.
 In case you use Gradle in IntelliJ, use the `gradle` command instead of `./gradlew` to ensure that command-line builds use the same Gradle version and cache.
 
-## Updating repositories
 
-Repositories are updated with the `repo` script.
-To update repositories to their latest version, and to clone new repositories, run:
+## Fresh checkout
+Since this is an aggregate repository of submodules, use the following command to put each submodule to their corresponding branch (without updating the commits):
 
-```shell script
+```shell
+./repo checkout
+```
+
+> [!NOTE]
+> On Windows, use `repo.bat` instead.
+
+
+## Updating submodules
+Alternatively, to check out and update the submodules to their latest commit, run:
+
+```shell
 ./repo update
 ```
 
-On Windows, use `repo.bat` instead.
 By default, repositories will be cloned via SSH.
 If you would rather clone over HTTPS, pass the `--transport https` option:
 
-```shell script
+```shell
 ./repo update --transport https
 ```
 
 For a list of other operations possible on repositories, run:
 
-```shell script
+```shell
 ./repo tasks
 ```
 
@@ -60,7 +65,7 @@ and look for tasks under group "Devenv repository tasks".
 
 To build all projects in all repositories, run:
 
-```shell script
+```shell
 ./gradlew buildAll
 ```
 
@@ -68,7 +73,7 @@ To build all projects in all repositories, run:
 
 Gradle can execute tasks besides just building. Run:
 
-```shell script
+```shell
 ./gradlew tasks
 ```
 to get an overview of which tasks can be executed.
@@ -76,24 +81,24 @@ to get an overview of which tasks can be executed.
 Because we use a mix of composite and multi-project builds, additional steps are required to traverse the hierarchy to find and run tasks in them.
 To [run tasks of a subproject in an included composite build, use the `:included-build-name:subproject-name:task-name` syntax](https://docs.gradle.org/current/userguide/composite_builds.html#composite_build_executing_tasks).
 For example, to run the `test` task in subproject `calc` of included composite build `spoofax3.example.root`:
-```shell script
+```shell
 ./gradlew :spoofax3.example.root:calc:test
 ```
 
 So, to explore the available tasks, 1) look at the available composite builds, 2) look at the subprojects of a composite build, 3) run the `tasks` task there.
 This goes as follows:
 1) To get a list of all included composite builds, run:
-```shell script
+```shell
 ./gradlew includedBuilds
 ```
 
 2) To get a list of subprojects of an included composite build, use the `:included-build-name:projects` syntax. For example:
-```shell script
+```shell
 ./gradlew :spoofax3.example.root:projects
 ```
 
 3) Run the `tasks` task:
-```shell script
+```shell
 ./gradlew :spoofax3.example.root:calc:tasks
 ```
 
@@ -133,7 +138,7 @@ When new repositories are cloned, refresh the `devenv` Gradle project. See [Refr
 By default, no repositories will be cloned or updated, they must be explicitly included.
 List all available repositories and their properties with:
 
-```shell script
+```shell
 ./repo list
 ```
 
