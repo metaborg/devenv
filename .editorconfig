@@ -76,8 +76,8 @@ tab_width = 2
 ij_continuation_indent_size = 2
 
 [{*.kt,*.kts}]
-indent_size = 2
-tab_width = 2
+indent_size = 4
+tab_width = 4
 ij_continuation_indent_size = 2
 # Don't use star imports.
 ij_kotlin_name_count_to_use_star_import = 999
