@@ -11,9 +11,6 @@ plugins {
   id("com.gradle.enterprise") version("3.14.1")
 }
 
-if(org.gradle.util.VersionNumber.parse(gradle.gradleVersion).major < 6) {
-  enableFeaturePreview("GRADLE_METADATA")
-}
 
 // Apply devenv-settings plugin. Settings plugins must still be put on the classpath via a buildscript block.
 buildscript {
