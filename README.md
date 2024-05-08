@@ -173,8 +173,9 @@ Use `tasksWithIncludedBuild` to register tasks from included builds, or use the 
 
 Devenv is not used for publishing, only for development and builds.
 Publishing the artifacts of a repository is done via that repository.
+Notably, Spoofax 3 publishing instructions are in the readme of the spoofax-pie repository.
 
-The non-master branches of devenv are [automatically built with our build farm](https://buildfarm.metaborg.org/view/Spoofax-PIE/job/metaborg/job/devenv/).
+The non-master branches of devenv are [automatically built with our build farm](https://buildfarm.metaborg.org/view/Devenv/job/metaborg/job/devenv/).
 Whenever a repository that devenv includes/updates has changed, the build for devenv is triggered automatically.
 
 This repository can also be built on-demand on GitHub actions by [manually running the build workflow](https://github.com/metaborg/devenv/actions/workflows/build.yml).
