@@ -8,7 +8,7 @@ pluginManagement {
 }
 
 plugins {
-  id("com.gradle.develocity") version "3.17.2"
+  id("com.gradle.enterprise") version("3.17.3")
 }
 
 
@@ -79,11 +79,12 @@ configure<mb.gradle.config.devenv.DevenvSettingsExtension> {
   includeBuildIfRepositoryIncluded("jenkins.pipeline")
 }
 
-develocity {
+gradleEnterprise {
   buildScan {
     if (!System.getenv("CI").isNullOrEmpty()) {
-      termsOfUseUrl.set("https://gradle.com/help/legal-terms-of-use")
-      termsOfUseAgree.set("yes")
+      termsOfServiceUrl = "https://gradle.com/terms-of-service"
+      termsOfServiceAgree = "yes"
+      publishAlways()
       tag("CI")
     }
   }
