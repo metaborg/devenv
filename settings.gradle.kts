@@ -32,8 +32,6 @@ configure<mb.gradle.config.devenv.DevenvSettingsExtension> {
   includeBuildIfRepositoryIncluded("gitonium")
   if(isRepositoryIncluded("coronium")) {
     includeBuildWithName("coronium", "coronium.root")
-    includeBuildWithName("coronium/plugin", "coronium")
-    includeBuildWithName("coronium/example", "coronium.example")
   }
 
   // Independent common Java libraries.
@@ -50,15 +48,11 @@ configure<mb.gradle.config.devenv.DevenvSettingsExtension> {
   // PIE Java libraries.
   if(isRepositoryIncluded("pie")) {
     includeBuildWithName("pie", "pie.root")
-    includeBuildWithName("pie/core", "pie.core.root")
-    includeBuildWithName("pie/bench", "pie.bench")
   }
 
   // Spoofax 2 Java libraries, languages, and Gradle plugin.
   if(isRepositoryIncluded("releng")) {
     includeBuildWithName("releng/gradle", "spoofax2.releng.root")
-    includeBuildWithName("releng/gradle/java", "spoofax2.releng.java.root")
-    includeBuildWithName("releng/gradle/language", "spoofax2.releng.language.root")
   }
 
   // PIE DSL (include after Spoofax 2, since it uses the Spoofax 2 Gradle plugin)
@@ -69,10 +63,6 @@ configure<mb.gradle.config.devenv.DevenvSettingsExtension> {
   // Spoofax 3 Java libraries, languages, and Gradle plugins.
   if(isRepositoryIncluded("spoofax-pie")) {
     includeBuildWithName("spoofax.pie", "spoofax3.root")
-    includeBuildWithName("spoofax.pie/core", "spoofax3.core.root")
-    includeBuildWithName("spoofax.pie/lwb", "spoofax3.lwb.root")
-    includeBuildWithName("spoofax.pie/lwb.distrib", "spoofax3.lwb.distrib.root")
-    includeBuildWithName("spoofax.pie/example", "spoofax3.example.root")
   }
 
   // Jenkins CI
