@@ -28,45 +28,56 @@ apply(plugin = "org.metaborg.gradle.config.devenv-settings")
 // Manually include nested composite builds, as IntelliJ does not support them.
 configure<mb.gradle.config.devenv.DevenvSettingsExtension> {
   // Independent Gradle plugins.
-  includeBuildIfRepositoryIncluded("gradle.config")
-  includeBuildIfRepositoryIncluded("gitonium")
+  if(isRepositoryIncluded("gradle.config")) {
+    includeBuild("gradle.config")
+  }
+  if(isRepositoryIncluded("gitonium")) {
+    includeBuild("gitonium")
+  }
   if(isRepositoryIncluded("coronium")) {
-    includeBuildWithName("coronium", "coronium.root")
+    includeBuild("coronium") { name = "coronium.root" }
+  }
+
+  // Dependency management
+  if(isRepositoryIncluded("depman")) {
+    includeBuild("depman")
   }
 
   // Independent common Java libraries.
   if(isRepositoryIncluded("log")) {
-    includeBuildWithName("log", "log.root")
+    includeBuild("log") { name = "log.root" }
   }
   if(isRepositoryIncluded("resource")) {
-    includeBuildWithName("resource", "resource.root")
+    includeBuild("resource") { name = "resource.root" }
   }
   if(isRepositoryIncluded("common")) {
-    includeBuildWithName("common", "common.root")
+    includeBuild("common") { name = "common.root" }
   }
 
   // PIE Java libraries.
   if(isRepositoryIncluded("pie")) {
-    includeBuildWithName("pie", "pie.root")
+    includeBuild("pie") { name = "pie.root" }
   }
 
   // Spoofax 2 Java libraries, languages, and Gradle plugin.
   if(isRepositoryIncluded("releng")) {
-    includeBuildWithName("releng/gradle", "spoofax2.releng.root")
+    includeBuild("releng/gradle") { name = "spoofax2.releng.root" }
   }
 
   // PIE DSL (include after Spoofax 2, since it uses the Spoofax 2 Gradle plugin)
   if(isRepositoryIncluded("pie")) {
-    includeBuildWithName("pie/lang", "pie.lang.root")
+    includeBuild("pie/lang") { name = "pie.lang.root" }
   }
 
   // Spoofax 3 Java libraries, languages, and Gradle plugins.
   if(isRepositoryIncluded("spoofax-pie")) {
-    includeBuildWithName("spoofax.pie", "spoofax3.root")
+    includeBuild("spoofax.pie") { name = "spoofax3.root" }
   }
 
   // Jenkins CI
-  includeBuildIfRepositoryIncluded("jenkins.pipeline")
+  if(isRepositoryIncluded("jenkins.pipeline")) {
+    includeBuild("jenkins.pipeline")
+  }
 }
 
 gradleEnterprise {
