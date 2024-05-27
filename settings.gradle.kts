@@ -2,24 +2,24 @@ rootProject.name = "devenv"
 
 // Make plugin repositories available, for loading plugins in included builds.
 pluginManagement {
-  repositories {
-    maven("https://artifacts.metaborg.org/content/groups/public/")
-  }
+    repositories {
+        maven("https://artifacts.metaborg.org/content/groups/public/")
+    }
 }
 
 plugins {
-  id("com.gradle.enterprise") version("3.17.3")
+    id("com.gradle.enterprise") version ("3.17.3")
 }
 
 
 // Apply devenv-settings plugin. Settings plugins must still be put on the classpath via a buildscript block.
 buildscript {
-  repositories {
-    maven("https://artifacts.metaborg.org/content/groups/public/")
-  }
-  dependencies {
-    classpath("org.metaborg:gradle.config:0.5.6")
-  }
+    repositories {
+        maven("https://artifacts.metaborg.org/content/groups/public/")
+    }
+    dependencies {
+        classpath("org.metaborg:gradle.config:0.5.6")
+    }
 }
 apply(plugin = "org.metaborg.gradle.config.devenv-settings")
 
@@ -27,66 +27,66 @@ apply(plugin = "org.metaborg.gradle.config.devenv-settings")
 // The order of these includes is important. Gradle plugins must be included BEFORE they are used!
 // Manually include nested composite builds, as IntelliJ does not support them.
 configure<mb.gradle.config.devenv.DevenvSettingsExtension> {
-  // Independent Gradle plugins.
-  if(isRepositoryIncluded("gradle.config")) {
-    includeBuild("gradle.config")
-  }
-  if(isRepositoryIncluded("gitonium")) {
-    includeBuild("gitonium")
-  }
-  if(isRepositoryIncluded("coronium")) {
-    includeBuild("coronium") { name = "coronium.root" }
-  }
+    // Independent Gradle plugins.
+    if (isRepositoryIncluded("gradle.config")) {
+        includeBuild("gradle.config")
+    }
+    if (isRepositoryIncluded("gitonium")) {
+        includeBuild("gitonium")
+    }
+    if (isRepositoryIncluded("coronium")) {
+        includeBuild("coronium") { name = "coronium.root" }
+    }
 
-  // Dependency management
-  if(isRepositoryIncluded("depman")) {
-    includeBuild("depman")
-  }
+    // Dependency management
+    if (isRepositoryIncluded("depman")) {
+        includeBuild("depman")
+    }
 
-  // Independent common Java libraries.
-  if(isRepositoryIncluded("log")) {
-    includeBuild("log") { name = "log.root" }
-  }
-  if(isRepositoryIncluded("resource")) {
-    includeBuild("resource") { name = "resource.root" }
-  }
-  if(isRepositoryIncluded("common")) {
-    includeBuild("common") { name = "common.root" }
-  }
+    // Independent common Java libraries.
+    if (isRepositoryIncluded("log")) {
+        includeBuild("log") { name = "log.root" }
+    }
+    if (isRepositoryIncluded("resource")) {
+        includeBuild("resource") { name = "resource.root" }
+    }
+    if (isRepositoryIncluded("common")) {
+        includeBuild("common") { name = "common.root" }
+    }
 
-  // PIE Java libraries.
-  if(isRepositoryIncluded("pie")) {
-    includeBuild("pie") { name = "pie.root" }
-  }
+    // PIE Java libraries.
+    if (isRepositoryIncluded("pie")) {
+        includeBuild("pie") { name = "pie.root" }
+    }
 
-  // Spoofax 2 Java libraries, languages, and Gradle plugin.
-  if(isRepositoryIncluded("releng")) {
-    includeBuild("releng/gradle") { name = "spoofax2.releng.root" }
-  }
+    // Spoofax 2 Java libraries, languages, and Gradle plugin.
+    if (isRepositoryIncluded("releng")) {
+        includeBuild("releng/gradle") { name = "spoofax2.releng.root" }
+    }
 
-  // PIE DSL (include after Spoofax 2, since it uses the Spoofax 2 Gradle plugin)
-  if(isRepositoryIncluded("pie")) {
-    includeBuild("pie/lang") { name = "pie.lang.root" }
-  }
+    // PIE DSL (include after Spoofax 2, since it uses the Spoofax 2 Gradle plugin)
+    if (isRepositoryIncluded("pie")) {
+        includeBuild("pie/lang") { name = "pie.lang.root" }
+    }
 
-  // Spoofax 3 Java libraries, languages, and Gradle plugins.
-  if(isRepositoryIncluded("spoofax-pie")) {
-    includeBuild("spoofax.pie") { name = "spoofax3.root" }
-  }
+    // Spoofax 3 Java libraries, languages, and Gradle plugins.
+    if (isRepositoryIncluded("spoofax-pie")) {
+        includeBuild("spoofax.pie") { name = "spoofax3.root" }
+    }
 
-  // Jenkins CI
-  if(isRepositoryIncluded("jenkins.pipeline")) {
-    includeBuild("jenkins.pipeline")
-  }
+    // Jenkins CI
+    if (isRepositoryIncluded("jenkins.pipeline")) {
+        includeBuild("jenkins.pipeline")
+    }
 }
 
 gradleEnterprise {
-  buildScan {
-    if (!System.getenv("CI").isNullOrEmpty()) {
-      termsOfServiceUrl = "https://gradle.com/terms-of-service"
-      termsOfServiceAgree = "yes"
-      publishAlways()
-      tag("CI")
+    buildScan {
+        if (!System.getenv("CI").isNullOrEmpty()) {
+            termsOfServiceUrl = "https://gradle.com/terms-of-service"
+            termsOfServiceAgree = "yes"
+            publishAlways()
+            tag("CI")
+        }
     }
-  }
 }
