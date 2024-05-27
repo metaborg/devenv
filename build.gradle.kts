@@ -116,6 +116,7 @@ fun Project.tasksWithIncludedBuild(name: String, fn: TaskContainer.(IncludedBuil
     tasks.fn(gradle.includedBuild(name))
   } catch(e: UnknownDomainObjectException) {
     // Ignore
+    logger.warn("Included build $name not found")
   }
 }
 
