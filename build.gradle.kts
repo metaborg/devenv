@@ -19,39 +19,33 @@ tasks.register("includedBuilds") {
     }
 }
 
-tasksWithIncludedBuild("gitonium") {
-    registerDelegateTask("buildGitonium", it, ":buildAll")
+// Gitonium
+tasks.register("buildGitonium") {
+    dependsOn(gradle.includedBuild("gitonium").task(":buildAll"))
 }
 
-tasksWithIncludedBuild("coronium") { coronium ->
-    tasksWithIncludedBuild("coronium.example") { coroniumExample ->
-        register("cleanCoronium") {
-            group = "development"
-            dependsOn(coronium.task(":cleanAll"))
-            dependsOn(coroniumExample.task(":cleanAll"))
-        }
-        register("buildCoronium") {
-            group = "development"
-            dependsOn(coronium.task(":buildAll"))
-            dependsOn(coroniumExample.task(":buildAll"))
-        }
+// Coronium
+gradle.includedBuild("coronium.root").let { coronium ->
+    tasks.register("buildCoronium") {
+        dependsOn(coronium.task(":buildAll"))
+    }
+    tasks.register("cleanCoronium") {
+        dependsOn(coronium.task(":cleanAll"))
     }
 }
 
-tasksWithIncludedBuild("spoofax.gradle") { spoofaxGradle ->
-    tasksWithIncludedBuild("spoofax.gradle.example") { spoofaxGradleExample ->
-        register("cleanSpoofaxGradle") {
-            group = "development"
-            dependsOn(spoofaxGradle.task(":cleanAll"))
-            dependsOn(spoofaxGradleExample.task(":cleanAll"))
-        }
-        register("buildSpoofaxGradle") {
-            group = "development"
-            dependsOn(spoofaxGradle.task(":buildAll"))
-            dependsOn(spoofaxGradleExample.task(":buildAll"))
-        }
-    }
-}
+// Spoofax Gradle
+//gradle.includedBuild("spoofax.gradle.root").let { spoofaxGradle ->
+//    tasks.register("buildSpoofaxGradle") {
+//        group = "Development"
+//        dependsOn(spoofaxGradle.task(":buildAll"))
+//    }
+//    tasks.register("cleanSpoofaxGradle") {
+//        group = "Development"
+//        dependsOn(spoofaxGradle.task(":cleanAll"))
+//    }
+//}
+
 
 tasksWithIncludedBuild("pie.core.root") { pieCore ->
     tasksWithIncludedBuild("pie.lang.root") { pieLang ->
@@ -98,23 +92,25 @@ tasksWithIncludedBuild("spoofax3.example.root") {
     registerDelegateTask("runSdf3IntelliJ", it, ":sdf3.intellij:runIde")
 }
 
-tasks.register("buildSpoofax3Lwb") {
-    dependsOn(gradle.includedBuild("spoofax3.root").task(":buildSpoofax3Lwb"))
-}
-tasks.register("runSpoofax3LwbEclipse") {
-    dependsOn(gradle.includedBuild("spoofax3.root").task(":runSpoofax3LwbEclipse"))
-}
-tasks.register("buildSpoofax3LwbEclipseInstallation") {
-    dependsOn(gradle.includedBuild("spoofax3.root").task(":buildSpoofax3LwbEclipseInstallation"))
-}
-tasks.register("buildSpoofax3LwbEclipseInstallationWithJvm") {
-    dependsOn(gradle.includedBuild("spoofax3.root").task(":buildSpoofax3LwbEclipseInstallationWithJvm"))
-}
-tasks.register("publishSpoofax3Lwb") {
-    dependsOn(gradle.includedBuild("spoofax3.root").task(":publishSpoofax3Lwb"))
-}
-tasks.register("archiveSpoofax3LwbEclipseInstallations") {
-    dependsOn(gradle.includedBuild("spoofax3.root").task(":archiveSpoofax3LwbEclipseInstallations"))
+gradle.includedBuild("spoofax3.root").let { spoofaxPie ->
+    tasks.register("buildSpoofax3Lwb") {
+        dependsOn(spoofaxPie.task(":buildSpoofax3Lwb"))
+    }
+    tasks.register("runSpoofax3LwbEclipse") {
+        dependsOn(spoofaxPie.task(":runSpoofax3LwbEclipse"))
+    }
+    tasks.register("buildSpoofax3LwbEclipseInstallation") {
+        dependsOn(spoofaxPie.task(":buildSpoofax3LwbEclipseInstallation"))
+    }
+    tasks.register("buildSpoofax3LwbEclipseInstallationWithJvm") {
+        dependsOn(spoofaxPie.task(":buildSpoofax3LwbEclipseInstallationWithJvm"))
+    }
+    tasks.register("publishSpoofax3Lwb") {
+        dependsOn(spoofaxPie.task(":publishSpoofax3Lwb"))
+    }
+    tasks.register("archiveSpoofax3LwbEclipseInstallations") {
+        dependsOn(spoofaxPie.task(":archiveSpoofax3LwbEclipseInstallations"))
+    }
 }
 
 
