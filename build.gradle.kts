@@ -98,18 +98,25 @@ tasksWithIncludedBuild("spoofax3.example.root") {
     registerDelegateTask("runSdf3IntelliJ", it, ":sdf3.intellij:runIde")
 }
 
-tasksWithIncludedBuild("spoofax3.lwb.root") {
-    registerDelegateTask("buildSpoofax3Lwb", it, ":buildAll")
+tasks.register("buildSpoofax3Lwb") {
+    dependsOn(gradle.includedBuild("spoofax3.root").task(":buildSpoofax3Lwb"))
+}
+tasks.register("runSpoofax3LwbEclipse") {
+    dependsOn(gradle.includedBuild("spoofax3.root").task(":runSpoofax3LwbEclipse"))
+}
+tasks.register("buildSpoofax3LwbEclipseInstallation") {
+    dependsOn(gradle.includedBuild("spoofax3.root").task(":buildSpoofax3LwbEclipseInstallation"))
+}
+tasks.register("buildSpoofax3LwbEclipseInstallationWithJvm") {
+    dependsOn(gradle.includedBuild("spoofax3.root").task(":buildSpoofax3LwbEclipseInstallationWithJvm"))
+}
+tasks.register("publishSpoofax3Lwb") {
+    dependsOn(gradle.includedBuild("spoofax3.root").task(":publishSpoofax3Lwb"))
+}
+tasks.register("archiveSpoofax3LwbEclipseInstallations") {
+    dependsOn(gradle.includedBuild("spoofax3.root").task(":archiveSpoofax3LwbEclipseInstallations"))
 }
 
-tasksWithIncludedBuild("spoofax3.lwb.distrib.root") {
-    registerDelegateTask("runSpoofax3LwbEclipse", it, ":spoofax.lwb.eclipse.feature:runEclipse")
-    registerDelegateTask("buildSpoofax3LwbEclipseInstallation", it, ":spoofax.lwb.eclipse.repository:createEclipseInstallation")
-    registerDelegateTask("buildSpoofax3LwbEclipseInstallationWithJvm", it, ":spoofax.lwb.eclipse.repository:createEclipseInstallationWithJvm")
-
-    registerDelegateTask("publishSpoofax3Lwb", it, ":spoofax.lwb.eclipse.repository:publish")
-    registerDelegateTask("archiveSpoofax3LwbEclipseInstallations", it, ":spoofax.lwb.eclipse.repository:archiveEclipseInstallations", ":spoofax.lwb.eclipse.repository:archiveEclipseInstallationsWithJvm")
-}
 
 fun Project.tasksWithIncludedBuild(name: String, fn: TaskContainer.(IncludedBuild) -> Unit) {
     try {
