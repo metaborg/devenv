@@ -23,29 +23,6 @@ tasks.register("buildGitonium") {
     dependsOn(gradle.includedBuild("gitonium").task(":buildAll"))
 }
 
-// Coronium
-gradle.includedBuild("coronium.root").let { coronium ->
-    tasks.register("buildCoronium") {
-        dependsOn(coronium.task(":buildAll"))
-    }
-    tasks.register("cleanCoronium") {
-        dependsOn(coronium.task(":cleanAll"))
-    }
-}
-
-// Spoofax Gradle
-//gradle.includedBuild("spoofax.gradle.root").let { spoofaxGradle ->
-//    tasks.register("buildSpoofaxGradle") {
-//        group = "Development"
-//        dependsOn(spoofaxGradle.task(":buildAll"))
-//    }
-//    tasks.register("cleanSpoofaxGradle") {
-//        group = "Development"
-//        dependsOn(spoofaxGradle.task(":cleanAll"))
-//    }
-//}
-
-
 tasksWithIncludedBuild("pie.core.root") { pieCore ->
     tasksWithIncludedBuild("pie.lang.root") { pieLang ->
         register("buildPie") {
@@ -118,7 +95,7 @@ fun Project.tasksWithIncludedBuild(name: String, fn: TaskContainer.(IncludedBuil
         tasks.fn(gradle.includedBuild(name))
     } catch (e: UnknownDomainObjectException) {
         // Ignore
-        logger.warn("Included build $name not found")
+        logger.warn("Included build not found, probably disabled: $name")
     }
 }
 
@@ -171,69 +148,70 @@ extensions.findByName("buildScan")?.withGroovyBuilder {
 //  we call the root `:test` task in the included build, and in each included build's multi-project
 //  root project we'll extend the `test` task to depend on the `:test` tasks of the subprojects.
 
+// Builds that have '*All' tasks (such as `buildAll` instead of `build`)
+val allTaskBuilds = listOf(
+    "coronium.root",
+    "log.root",
+    "resource.root",
+    "common.root",
+    "pie.root",
+    "spoofax2.releng.root",
+    "pie.lang.root",
+    "spoofax3.root",
+)
+
 // Build tasks
 tasks.register("assembleAll") {
     group = "Build"
     description = "Assembles the outputs of the subprojects and included builds."
-    dependsOn(tasks.named("assemble"))
-    dependsOn(gradle.includedBuilds.map { it.task(":assemble") })
-    dependsOn(project.subprojects.mapNotNull { it.tasks.findByName("assemble") })
+    dependsOnAll("assemble")
 }
 tasks.register("buildAll") {
     group = "Build"
     description = "Assembles and tests the subprojects and included builds."
-    dependsOn(tasks.named("build"))
-    dependsOn(gradle.includedBuilds.map { it.task(":build") })
-    dependsOn(project.subprojects.mapNotNull { it.tasks.findByName("build") })
+    dependsOnAll("build")
 }
 tasks.register("cleanAll") {
     group = "Build"
     description = "Cleans the outputs of the subprojects and included builds."
-    dependsOn(tasks.named("clean"))
-    dependsOn(gradle.includedBuilds.map { it.task(":clean") })
-    dependsOn(project.subprojects.mapNotNull { it.tasks.findByName("clean") })
+    dependsOnAll("clean")
 }
 
 // Publishing tasks
 tasks.register("publishAll") {
     group = "Publishing"
     description = "Publishes all subprojects and included builds to a remote Maven repository."
-    dependsOn(tasks.named("publish"))
-    dependsOn(gradle.includedBuilds.filter { it.name == "gitonium"}.map { it.task(":publish") })
+    dependsOn(gradle.includedBuilds.filter { it.name != "gitonium"}.map { it.task(":publish") })
     dependsOn(gradle.includedBuild("gitonium").task(":publishAllPublicationsToMetaborgArtifactsRepository"))
     dependsOn(project.subprojects.mapNotNull { it.tasks.findByName("publish") })
 }
 tasks.register("publishAllToMavenLocal") {
     group = "Publishing"
     description = "Publishes all subprojects and included builds to the local Maven repository."
-    dependsOn(tasks.named("publishToMavenLocal"))
-    dependsOn(gradle.includedBuilds.map { it.task(":publishToMavenLocal") })
-    dependsOn(project.subprojects.mapNotNull { it.tasks.findByName("publishToMavenLocal") })
+    dependsOnAll("publishToMavenLocal", "publishAllToMavenLocal")
 }
 
 // Verification tasks
 tasks.register("checkAll") {
     group = "Verification"
     description = "Runs all checks on the subprojects and included builds."
-    dependsOn(tasks.named("check"))
-    dependsOn(gradle.includedBuilds.map { it.task(":check") })
-    dependsOn(project.subprojects.mapNotNull { it.tasks.findByName("check") })
+    dependsOnAll("check")
 }
 tasks.register("testAll") {
     group = "Verification"
     description = "Runs all unit tests on the subprojects and included builds."
-    dependsOn(tasks.named("test"))
-    dependsOn(gradle.includedBuilds.map { it.task(":test") })
-    dependsOn(project.subprojects.mapNotNull { it.tasks.findByName("test") })
+    dependsOnAll("test")
 }
 
 // Help tasks
 tasks.register("allTasks") {
     group = "Help"
     description = "Displays all tasks of subprojects and included builds."
-    dependsOn(tasks.named("tasks"))
-    dependsOn(gradle.includedBuilds.map { it.task(":tasks") })
-    dependsOn(project.subprojects.mapNotNull { it.tasks.findByName("tasks") })
+    dependsOnAll("tasks", "tasks")
 }
 
-
+fun Task.dependsOnAll(taskName: String, allTaskName: String = "${taskName}All") {
+    dependsOn(gradle.includedBuilds.filter { it.name in allTaskBuilds }.map { it.task(":$allTaskName") })
+    dependsOn(gradle.includedBuilds.filter { it.name !in allTaskBuilds }.map { it.task(":$taskName") })
+    dependsOn(project.subprojects.mapNotNull { it.tasks.findByName(taskName) })
+}
