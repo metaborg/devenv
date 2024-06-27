@@ -44,6 +44,9 @@ configure<mb.gradle.config.devenv.DevenvSettingsExtension> {
     }
 
     // Independent common Java libraries.
+    if (isRepositoryIncluded("depman")) {
+        includeBuild("depman")
+    }
     if (isRepositoryIncluded("log")) {
         includeBuild("log") { name = "log.root" }
     }
