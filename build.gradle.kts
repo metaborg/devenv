@@ -27,8 +27,8 @@ tasksWithIncludedBuild("pie.core.root") { pieCore ->
     tasksWithIncludedBuild("pie.lang.root") { pieLang ->
         register("buildPie") {
             group = "development"
-            dependsOn(pieCore.task(":buildAll"))
-            dependsOn(pieLang.task(":buildAll"))
+            dependsOn(pieCore.task(":build"))
+            dependsOn(pieLang.task(":build"))
         }
     }
 }
@@ -151,12 +151,12 @@ extensions.findByName("buildScan")?.withGroovyBuilder {
 // Builds that have '*All' tasks (such as `buildAll` instead of `build`)
 val allTaskBuilds = listOf(
     "coronium.root",
-    "log.root",
-    "resource.root",
-    "common.root",
-    "pie.root",
+//    "log.root",
+//    "resource.root",
+//    "common.root",
+//    "pie.root",
     "spoofax2.releng.root",
-    "pie.lang.root",
+//    "pie.lang.root",
     "spoofax3.root",
 )
 

@@ -46,34 +46,26 @@ configure<mb.gradle.config.devenv.DevenvSettingsExtension> {
         includeBuild("gradle.config")
     }
     if (isRepositoryIncluded("gitonium")) {
-        includeBuild("gitonium")
+        includeBuild("gitonium/")
     }
     if (isRepositoryIncluded("coronium")) {
-        includeBuild("coronium") { name = "coronium.root" }
+        includeBuild("coronium/") { name = "coronium.root" }
     }
 
     // Dependency management
     if (isRepositoryIncluded("depman")) {
-        includeBuild("depman")
+        includeBuild("depman/")
     }
 
-    // Independent common Java libraries.
-    if (isRepositoryIncluded("depman")) {
-        includeBuild("depman")
-    }
+    // Independent common Java libraries
     if (isRepositoryIncluded("log")) {
-        includeBuild("log") { name = "log.root" }
+        includeBuild("log/")
     }
     if (isRepositoryIncluded("resource")) {
-        includeBuild("resource") { name = "resource.root" }
+        includeBuild("resource/")
     }
     if (isRepositoryIncluded("common")) {
-        includeBuild("common") { name = "common.root" }
-    }
-
-    // PIE Java libraries.
-    if (isRepositoryIncluded("pie")) {
-        includeBuild("pie") { name = "pie.root" }
+        includeBuild("common/")
     }
 
     // Spoofax 2 Java libraries, languages, and Gradle plugin.
@@ -81,10 +73,11 @@ configure<mb.gradle.config.devenv.DevenvSettingsExtension> {
         includeBuild("releng/gradle") { name = "spoofax2.releng.root" }
     }
 
-    // PIE DSL (include after Spoofax 2, since it uses the Spoofax 2 Gradle plugin)
+    // PIE Java libraries and DSL (include after Spoofax 2, since it uses the Spoofax 2 Gradle plugin)
     if (isRepositoryIncluded("pie")) {
-        includeBuild("pie/lang") { name = "pie.lang.root" }
+        includeBuild("pie/")
     }
+
 
     // Spoofax 3 Java libraries, languages, and Gradle plugins.
     if (isRepositoryIncluded("spoofax-pie")) {
