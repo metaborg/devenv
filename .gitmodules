@@ -78,6 +78,3 @@
 	path = spoofax.pie
 	url = https://github.com/metaborg/spoofax-pie.git
 	branch = develop
-[submodule "depman"]
-	path = depman
-	url = https://github.com/metaborg/spoofax3-depman.git
