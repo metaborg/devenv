@@ -2,6 +2,7 @@
 buildscript {
     repositories {
         maven("https://artifacts.metaborg.org/content/groups/public/")
+        mavenCentral()
     }
     dependencies {
         classpath("org.metaborg:gradle.config:0.7.1")

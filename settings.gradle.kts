@@ -1,30 +1,22 @@
 rootProject.name = "devenv"
 
-// This allows us to use plugins from Metaborg Artifacts
-pluginManagement {
-    repositories {
-        maven("https://artifacts.metaborg.org/content/groups/public/")
-    }
-}
-
-// This allows us to use the catalog in dependencies
 dependencyResolutionManagement {
     repositories {
         maven("https://artifacts.metaborg.org/content/groups/public/")
+        mavenCentral()
     }
-    versionCatalogs {
-        create("libs") {
-            from("org.metaborg:catalog:0.6.4")
-        }
+}
+
+pluginManagement {
+    repositories {
+        maven("https://artifacts.metaborg.org/content/groups/public/")
+        gradlePluginPortal()
     }
 }
 
 plugins {
-    // This downloads an appropriate JVM if not already available
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
-    id("com.gradle.enterprise") version ("3.17.3")
+    id("org.metaborg.convention.settings") version "0.7.2"
 }
-
 
 // Apply devenv-settings plugin. Settings plugins must still be put on the classpath via a buildscript block.
 buildscript {
@@ -87,16 +79,5 @@ configure<mb.gradle.config.devenv.DevenvSettingsExtension> {
     // Jenkins CI
     if (isRepositoryIncluded("jenkins.pipeline")) {
         includeBuild("jenkins.pipeline")
-    }
-}
-
-gradleEnterprise {
-    buildScan {
-        if (!System.getenv("CI").isNullOrEmpty()) {
-            termsOfServiceUrl = "https://gradle.com/terms-of-service"
-            termsOfServiceAgree = "yes"
-            publishAlways()
-            tag("CI")
-        }
     }
 }
