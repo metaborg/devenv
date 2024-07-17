@@ -15,7 +15,7 @@ pluginManagement {
 }
 
 plugins {
-    id("org.metaborg.convention.settings") version "0.7.2"
+    id("org.metaborg.convention.settings") version "0.8.1"
 }
 
 // Apply devenv-settings plugin. Settings plugins must still be put on the classpath via a buildscript block.
