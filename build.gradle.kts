@@ -156,7 +156,7 @@ val allTaskBuilds = listOf(
 //    "resource.root",
 //    "common.root",
 //    "pie.root",
-    "spoofax2.releng.root",
+//    "spoofax2.releng.root",
 //    "pie.lang.root",
     "spoofax3.root",
 )
