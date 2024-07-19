@@ -149,17 +149,6 @@ extensions.findByName("buildScan")?.withGroovyBuilder {
 //  we call the root `:test` task in the included build, and in each included build's multi-project
 //  root project we'll extend the `test` task to depend on the `:test` tasks of the subprojects.
 
-// Builds that have '*All' tasks (such as `buildAll` instead of `build`)
-val allTaskBuilds = listOf(
-//    "coronium.root",
-//    "log.root",
-//    "resource.root",
-//    "common.root",
-//    "pie.root",
-//    "spoofax2.releng.root",
-//    "pie.lang.root",
-    "spoofax3.root",
-)
 
 // Build tasks
 tasks.register("assembleAll") {
@@ -190,7 +179,7 @@ tasks.register("publishAll") {
 tasks.register("publishAllToMavenLocal") {
     group = "Publishing"
     description = "Publishes all subprojects and included builds to the local Maven repository."
-    dependsOnAll("publishToMavenLocal", "publishAllToMavenLocal")
+    dependsOnAll("publishToMavenLocal")
 }
 
 // Verification tasks
@@ -209,11 +198,10 @@ tasks.register("testAll") {
 tasks.register("allTasks") {
     group = "Help"
     description = "Displays all tasks of subprojects and included builds."
-    dependsOnAll("tasks", "tasks")
+    dependsOnAll("tasks")
 }
 
-fun Task.dependsOnAll(taskName: String, allTaskName: String = "${taskName}All") {
-    dependsOn(gradle.includedBuilds.filter { it.name in allTaskBuilds }.map { it.task(":$allTaskName") })
-    dependsOn(gradle.includedBuilds.filter { it.name !in allTaskBuilds }.map { it.task(":$taskName") })
+fun Task.dependsOnAll(taskName: String) {
+    dependsOn(gradle.includedBuilds.map { it.task(":$taskName") })
     dependsOn(project.subprojects.mapNotNull { it.tasks.findByName(taskName) })
 }
