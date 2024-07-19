@@ -151,7 +151,7 @@ extensions.findByName("buildScan")?.withGroovyBuilder {
 
 // Builds that have '*All' tasks (such as `buildAll` instead of `build`)
 val allTaskBuilds = listOf(
-    "coronium.root",
+//    "coronium.root",
 //    "log.root",
 //    "resource.root",
 //    "common.root",
