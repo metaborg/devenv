@@ -18,11 +18,6 @@ tasks.register("includedBuilds") {
     }
 }
 
-// Gitonium
-tasks.register("buildGitonium") {
-    dependsOn(gradle.includedBuild("gitonium").task(":buildAll"))
-}
-
 tasksWithIncludedBuild("pie.core.root") { pieCore ->
     tasksWithIncludedBuild("pie.lang.root") { pieLang ->
         register("buildPie") {
