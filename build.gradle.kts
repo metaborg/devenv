@@ -177,7 +177,7 @@ tasks.register("publishAll") {
     group = "Publishing"
     description = "Publishes all subprojects and included builds to a remote Maven repository."
     dependsOn(gradle.includedBuilds.filter { it.name !in listOf("gitonium", "coronium.root") }.map { it.task(":publish") })
-    dependsOn(gradle.includedBuild("coronium.root").task(":publishAllPublicationsToMetaborgArtifactsRepository"))
+    dependsOn(gradle.includedBuild("coronium.root").task(":coronium:publishAllPublicationsToMetaborgArtifactsRepository"))
     dependsOn(project.subprojects.mapNotNull { it.tasks.findByName("publish") })
 }
 tasks.register("publishAllToMavenLocal") {
