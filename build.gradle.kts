@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath("org.metaborg:gradle.config:0.7.1")
+        classpath("org.metaborg:gradle.config:0.7.3")
     }
 }
 
@@ -17,11 +17,6 @@ tasks.register("includedBuilds") {
             println(":${build.name}")
         }
     }
-}
-
-// Gitonium
-tasks.register("buildGitonium") {
-    dependsOn(gradle.includedBuild("gitonium").task(":buildAll"))
 }
 
 tasksWithIncludedBuild("pie.core.root") { pieCore ->
@@ -171,9 +166,8 @@ tasks.register("cleanAll") {
 tasks.register("publishAll") {
     group = "Publishing"
     description = "Publishes all subprojects and included builds to a remote Maven repository."
-    dependsOn(gradle.includedBuilds.filter { it.name !in listOf("gitonium", "coronium") }.map { it.task(":publish") })
-    dependsOn(gradle.includedBuild("gitonium").task(":publishAllPublicationsToMetaborgArtifactsRepository"))
-    dependsOn(gradle.includedBuild("coronium").task(":publishAllPublicationsToMetaborgArtifactsRepository"))
+    // NOTE: Gitonium and Coronium are published separately.
+    dependsOn(gradle.includedBuilds.filter { it.name !in listOf("gitonium", "coronium.root") }.map { it.task(":publish") })
     dependsOn(project.subprojects.mapNotNull { it.tasks.findByName("publish") })
 }
 tasks.register("publishAllToMavenLocal") {
