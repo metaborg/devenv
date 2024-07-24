@@ -309,9 +309,10 @@ Command-line arguments such as `--args` are not supported for tasks in the root 
 
 The working directory is the directory with the `gradle.build.kts` file of the CLI project. This cannot be changed. For example, `spoofax.pie/example/sdf3/sdf3.cli/` for the `:sdf3.cli` project.
 
-## Copyright and License
 
-Copyright © 2018-2022 Delft University of Technology
+## License
+Copyright 2018-2024 [Programming Languages Group](https://pl.ewi.tudelft.nl/), [Delft University of Technology](https://www.tudelft.nl/)
 
-The files in this repository are licensed under the [Apache License, Version 2.0](https://www.apache.org/licenses/LICENSE-2.0).
-You may use the files in this repository in compliance with the license.
+Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at <https://www.apache.org/licenses/LICENSE-2.0>
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an **"as is" basis, without warranties or conditions of any kind**, either express or implied. See the License for the specific language governing permissions and limitations under the License.
