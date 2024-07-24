@@ -54,6 +54,9 @@ configure<mb.gradle.config.devenv.DevenvSettingsExtension> {
 
 
     // Spoofax 3 Java libraries, languages, and Gradle plugins.
+    if (isRepositoryIncluded("spoofax.gradle")) {
+        includeBuild("spoofax.gradle") { name = "spoofax.gradle.root" }
+    }
     if (isRepositoryIncluded("spoofax-pie")) {
         includeBuild("spoofax.pie") { name = "spoofax3.root" }
     }
